@@ -1,5 +1,5 @@
 import * as express from "express";
-import { Authenticator } from "../models/Authenticator";
+import { Authenticator } from "../models/aAuthenticator";
 import { UuidHelper } from "../models/UuidHelper"
 
 export const loginRouter = express.Router();
