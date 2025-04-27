@@ -6,5 +6,4 @@ export interface UserInterface {
     password: string;
     email?: string;
     role?: string;
-    tenantIdentifiers: mongodb.ObjectId[];
 }

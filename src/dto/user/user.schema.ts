@@ -20,11 +20,5 @@ export const userJsonSchema = {
         type: String,
         required: false,
         description: "'role' is optional and is a string",
-    },
-    tenantIdentifiers: {
-        type: [Schema.Types.ObjectId],
-        required: true,
-        description: "'tenantIdentifiers' is required and is a list of  valid ObjectId's",
-    },
-
+    }
 };
