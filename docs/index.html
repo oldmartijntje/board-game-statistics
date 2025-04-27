@@ -4,22 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OldMartijntje's Template📋</title>
+    <title>OldMartijntje's Game Statistics🎲</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="https://i.imgur.com/1noWzDB.png" type="image/x-icon">
-    <meta name="description" content="OldMartijntje's Template📋">
-    <meta name="keywords" content="OldMartijntje, Developers, Web Development, Software Development">
+    <link rel="icon" href="https://i.imgur.com/z7KclUF.png" type="image/x-icon">
+    <meta name="description"
+        content="OldMartijntje's Game Statistics🎲 - Track your board game collection, plays, and scores with this self-hosted web app.">
+    <meta name="keywords" content="OldMartijntje, Board game, statistics, collection, tracking, plays, scores">
     <meta name="author" content="OldMartijntje">
-    <meta property="og:image" content="https://i.imgur.com/NeU2I13.png">
-
-
+    <meta property="og:image" content="https://i.imgur.com/yMdUr3X.png">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="./">OldMartijntje's Template📋</a>
+            <a class="navbar-brand" href="./">OldMartijntje's Stats🎲</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -30,6 +30,9 @@
                         <a class="nav-link active" aria-current="page" href="./">Home</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="./login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" target="_blank" href="https://oldmartijntje.nl">Main🦖</a>
                     </li>
                     <li class="nav-item">
@@ -37,39 +40,89 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" target="_blank"
-                            href="https://github.com/oldmartijntje/localNodeBox">Github</a>
+                            href="https://github.com/oldmartijntje/BG_stats_web">Github</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container pt-3">
-        <h1 class="text-center">Welcome to OldMartijntje's Template📋</h1>
-        <p class="text-center" id="description">This website is a basic typescript nodejs webapp</p>
+    <!-- Homepage Content -->
+    <div class="main-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="site-card info-card">
+                        <div class="logo">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="45" fill="#1f8246" />
+                                <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" font-size="40">
+                                    🎲
+                                </text>
+                            </svg>
+                            <div class="brand-name">Board Game Statistics Tracker</div>
+                        </div>
 
+                        <div class="info-text">
+                            <!-- <h2 class="text-center mb-4">Keep Your Game Collection Organized</h2> -->
 
+                            <p>
+                                Track your board game collection, plays, and scores with this easy-to-use web tool. View
+                                comprehensive
+                                statistics and insightful graphs for your games, plays, and all players.
+                            </p>
+
+                            <p>
+                                This web app was born out of necessity. When I stopped using a smartphone, I encountered
+                                a problem:
+                                how to continue tracking my board game statistics? The excellent
+                                <a href="https://www.bgstatsapp.com/" target="_blank">Board Game Stats mobile app</a>
+                                allows you to export plays, which you can import here, and vice versa.
+                            </p>
+
+                            <p>
+                                <strong>Note:</strong> This project is not affiliated with the Board Game Stats team,
+                                nor is it monetized in any way. If you're a mobile user, I highly recommend trying
+                                their excellent app first. This alternative is specifically designed for those who
+                                prefer
+                                a desktop or web-based solution.
+                            </p>
+
+                            <h3 class="mt-4">Key Features</h3>
+                            <ul>
+                                <li>Import and export compatibility with Board Game Stats app</li>
+                                <li>Detailed statistics and visualizations</li>
+                                <li>Player performance tracking</li>
+                                <li>Game collection management</li>
+                                <li>Self-hosted solution for privacy</li>
+                            </ul>
+
+                            <h3 class="mt-4">Technical Details</h3>
+                            <p>
+                                This application is built with Node.js/TypeScript and MongoDB, which can run either
+                                locally
+                                or hosted on a server. It includes a login system to keep your data secure when hosted.
+                                Best of all, it's completely <a href="https://github.com/oldmartijntje/BG_stats_web"
+                                    target="_blank">open source</a>,
+                                so you can customize it or add your own features.
+                            </p>
+
+                            <div class="mt-5 d-flex justify-content-center gap-3">
+                                <a href="./login" class="btn btn-primary">Go to Login</a>
+                                <a href="https://github.com/oldmartijntje/BG_stats_web" target="_blank"
+                                    class="btn btn-outline-light">View on GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <footer class="footer mt-auto py-3 bg-dark text-white text-center">
-        <div class="container">
-            <p>© 2025 OldMartijntje</p>
-        </div>
-    </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
-    <script>
-        kofiWidgetOverlay.draw('oldmartijntje', {
-            'type': 'floating-chat',
-            'floating-chat.donateButton.text': 'Support me',
-            'floating-chat.donateButton.background-color': '#00b9fe',
-            'floating-chat.donateButton.text-color': '#fff'
-        });
-    </script>
 
     <!-- Google tag (gtag.js) -->
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-ZS4T7T7W1N"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZS4T7T7W1N"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
