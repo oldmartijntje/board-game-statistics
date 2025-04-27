@@ -1,0 +1,15 @@
+{
+    "name": "local-node-box",
+    "version": "1.0.0",
+    "author": "https://oldmartijntje.nl",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "date-fns": "^4.1.0",
+        "mqtt": "^5.10.1",
+        "ws": "^8.18.0",
+        "cors": "^2.8.5",
+        "express": "^4.19.2"
+    }
+}

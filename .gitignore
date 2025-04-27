@@ -1,3 +1,10 @@
+config.json
+mqtt_scan_data.json
+yourfile.bin
+output.txt
+myMQTT.log
+MQTT-log.json
+.vscode/
 # Logs
 logs
 *.log
@@ -103,12 +110,6 @@ dist
 # vuepress v2.x temp and cache directory
 .temp
 .cache
-
-# vitepress build output
-**/.vitepress/dist
-
-# vitepress cache directory
-**/.vitepress/cache
 
 # Docusaurus cache and generated files
 .docusaurus
