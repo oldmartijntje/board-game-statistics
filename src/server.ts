@@ -56,7 +56,7 @@ main().then(async () => {
 
         app.use(cors());
         app.use("/login", loginRouter);
-        // app.use(expressStatic(staticHtmlPath));
+        app.use(expressStatic(staticHtmlPath));
 
         app.get('/:page?', (req, res) => {
             const page = req.params.page || 'index';
