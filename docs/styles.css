@@ -126,6 +126,10 @@ a:hover {
     text-decoration: underline;
 }
 
+.error p {
+    color: #ff0000;
+}
+
 /* Helper classes */
 .text-center {
     text-align: center;

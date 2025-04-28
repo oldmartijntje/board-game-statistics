@@ -1,4 +1,7 @@
-
+let usernameField = document.getElementById('username')
+let passwordField = document.getElementById('password')
+let loginHeaderNav = document.getElementById('loginOrAccountNav')
+let errorLoginText = document.getElementById('errorLoginText')
 let data = localStorage.getItem("oldma_game_stats")
 let tryLogin = false;
 let username = null;
@@ -17,17 +20,75 @@ if (data != null) {
     }
 }
 if (tryLogin) {
-    (async () => {
-        const rawResponse = await fetch('./login/validateToken', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username: username, sessionToken: token })
-        });
-        const content = await rawResponse.json();
+    fetch('/login/validateToken', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: username, sessionToken: token })
+    }).then(async function (res) {
+        const content = await res.json();
+        writeLog(res, "/validateToken");
+        writeLog(content, "/validateToken");
+        if (res.status == 200 && res.ok == true) {
+            setHeaderText();
+        } else {
+            localStorage.removeItem("oldma_game_stats");
+        }
+    });
+}
 
-        console.log(content);
-    })();
+function setHeaderText() {
+    // set the header button
+    loginHeaderNav.children[0].innerHTML = "Account"
+    loginHeaderNav.children[0].href = "/account"
+    if (loginHeaderNav.children[0].classList.contains("active")) {
+        location.href = "/account";
+    }
+}
+
+function submitIt() {
+    if (passwordField != null && passwordField != null) {
+        if (usernameField.value && passwordField.value) {
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: usernameField.value, password: passwordField.value })
+            }).then(async function (res) {
+                const content = await res.json();
+                if (res.status == 200 && res.ok == true && content.sessionToken != undefined) {
+                    data = {
+                        username: usernameField.value,
+                        token: content.sessionToken
+                    }
+                    localStorage.setItem("oldma_game_stats", JSON.stringify(data));
+                    try {
+                        if (errorLoginText) {
+                            errorLoginText.style.display = "none";
+                        }
+                    } catch (e) {
+
+                    }
+                    setHeaderText();
+                } else {
+                    try {
+                        if (errorLoginText) {
+                            errorLoginText.style.display = "block";
+                            errorLoginText.children[0].innerText = content.message;
+                        }
+                    } catch (e) {
+
+                    }
+                }
+                writeLog(res, "/login");
+                writeLog(content, "/login");
+            });
+
+
+        }
+    }
 }
