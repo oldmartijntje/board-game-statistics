@@ -58,13 +58,15 @@ main().then(async () => {
         app.use("/login", loginRouter);
         // app.use(expressStatic(staticHtmlPath));
 
-        // your main page
-        app.get('/', (req, res) => {
-            res.render('index', { title: 'Home Page' });
-        });
-
-        app.get('/about', (req, res) => {
-            res.render('about', { title: 'About Page' });
+        app.get('/:page?', (req, res) => {
+            const page = req.params.page || 'index';
+            res.render(page, { title: `${page.charAt(0).toUpperCase() + page.slice(1)} Page` }, (err, html) => {
+                if (err) {
+                    res.status(404).render('404', { title: '404 Not Found' });
+                } else {
+                    res.send(html);
+                }
+            });
         });
 
         app.listen(port, () => {
