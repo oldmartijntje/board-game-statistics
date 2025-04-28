@@ -6,6 +6,7 @@ let data = localStorage.getItem("oldma_game_stats")
 let tryLogin = false;
 let username = null;
 let token = null;
+let authenticatedUser = false;
 if (data != null) {
     try {
         let dataObject = JSON.parse(data);
@@ -32,6 +33,7 @@ if (tryLogin) {
         writeLog(res, "/validateToken");
         writeLog(content, "/validateToken");
         if (res.status == 200 && res.ok == true) {
+            authenticatedUser = true;
             setHeaderText();
         } else {
             localStorage.removeItem("oldma_game_stats");
@@ -45,50 +47,5 @@ function setHeaderText() {
     loginHeaderNav.children[0].href = "/dashboard"
     if (loginHeaderNav.children[0].classList.contains("active")) {
         location.href = "/dashboard";
-    }
-}
-
-function submitIt() {
-    if (passwordField != null && passwordField != null) {
-        if (usernameField.value && passwordField.value) {
-            fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: usernameField.value, password: passwordField.value })
-            }).then(async function (res) {
-                const content = await res.json();
-                if (res.status == 200 && res.ok == true && content.sessionToken != undefined) {
-                    data = {
-                        username: usernameField.value,
-                        token: content.sessionToken
-                    }
-                    localStorage.setItem("oldma_game_stats", JSON.stringify(data));
-                    try {
-                        if (errorLoginText) {
-                            errorLoginText.style.display = "none";
-                        }
-                    } catch (e) {
-
-                    }
-                    setHeaderText();
-                } else {
-                    try {
-                        if (errorLoginText) {
-                            errorLoginText.style.display = "block";
-                            errorLoginText.children[0].innerText = content.message;
-                        }
-                    } catch (e) {
-
-                    }
-                }
-                writeLog(res, "/login");
-                writeLog(content, "/login");
-            });
-
-
-        }
     }
 }
