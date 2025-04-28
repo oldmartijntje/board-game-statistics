@@ -41,10 +41,10 @@ if (tryLogin) {
 
 function setHeaderText() {
     // set the header button
-    loginHeaderNav.children[0].innerHTML = "Account"
-    loginHeaderNav.children[0].href = "/account"
+    loginHeaderNav.children[0].innerHTML = "Dashboard"
+    loginHeaderNav.children[0].href = "/dashboard"
     if (loginHeaderNav.children[0].classList.contains("active")) {
-        location.href = "/account";
+        location.href = "/dashboard";
     }
 }
 
