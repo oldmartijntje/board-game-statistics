@@ -55,27 +55,31 @@ main().then(async () => {
         app.set('views', path.join(__dirname, '../views'));
 
         app.use(cors());
-        app.use("/login", loginRouter);
+        app.use("/api/login", loginRouter);
         app.use(expressStatic(staticHtmlPath));
 
-        app.get('/:page?', (req, res) => {
-            const page = req.params.page || 'index';
-            res.render(page, { title: `${page.charAt(0).toUpperCase() + page.slice(1)} Page` }, (err, html) => {
-                if (err) {
-                    res.status(404).render('404', { title: '404 Not Found' });
-                } else {
-                    res.send(html);
-                }
-            });
-        });
+        registerPages(app);
 
         app.listen(port, () => {
             console.log(`Server running at http://localhost:${port}...`);
         });
 
         app.use((req, res) => {
-            res.status(404).render('404', { title: '404 Not Found' });
+            res.status(404).render('pages/404', { title: '404 Not Found' });
         });
     }).catch(error => console.error(error));
 
 }).catch(error => console.error(error));
+
+function registerPages(app: express.Express) {
+    registerEJS(app, 'pages/index', '/', { title: 'Home' });
+    registerEJS(app, 'pages/login', '/login', { title: 'Login' });
+    registerEJS(app, 'pages/register', '/register', { title: 'Register' });
+    registerEJS(app, 'pages/dashboard', '/dashboard', { title: 'Dashboard' });
+}
+
+function registerEJS(app: express.Express, folderPath: string, browserPath: string, options?: object) {
+    app.get(browserPath, (req, res) => {
+        res.render(folderPath, options);
+    });
+}
