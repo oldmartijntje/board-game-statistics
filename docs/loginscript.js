@@ -20,7 +20,7 @@ if (data != null) {
     }
 }
 if (tryLogin) {
-    fetch('/login/validateToken', {
+    fetch('/api/login/validateToken', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -51,7 +51,7 @@ function setHeaderText() {
 function submitIt() {
     if (passwordField != null && passwordField != null) {
         if (usernameField.value && passwordField.value) {
-            fetch('/login', {
+            fetch('/api/login', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
