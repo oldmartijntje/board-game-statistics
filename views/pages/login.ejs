@@ -15,7 +15,7 @@
                         <div class="site-card login-card">
                             <div class="logo">
                                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="50" cy="50" r="45" fill="#1f8246" />
+                                    <circle cx="50" cy="50" r="45" fill="var(--primary)" />
                                     <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central"
                                         font-size="40">
                                         🎲
@@ -36,6 +36,10 @@
                                 </div>
                                 <div class="links error" id="errorLoginText" style="display: none;">
                                     <p>Error text</p>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">Remember me</label>
                                 </div>
                                 <div class="d-grid">
                                     <button type="button" onclick="submitIt()" class="btn btn-primary">Sign in</button>
@@ -68,6 +72,9 @@
                                 data = {
                                     username: usernameField.value,
                                     token: content.sessionToken
+                                }
+                                if (rememberMe.checked && content.refreshToken != undefined) {
+                                    data.refreshToken = content.refreshToken;
                                 }
                                 localStorage.setItem("oldma_game_stats", JSON.stringify(data));
                                 try {
