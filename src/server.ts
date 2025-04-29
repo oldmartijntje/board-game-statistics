@@ -75,7 +75,8 @@ function registerPages(app: express.Express) {
     registerEJS(app, 'pages/index', '/', { title: 'Home' });
     registerEJS(app, 'pages/login', '/login', { title: 'Login' });
     registerEJS(app, 'pages/register', '/register', { title: 'Register' });
-    registerEJS(app, 'pages/dashboard', '/dashboard', { title: 'Dashboard' });
+    registerEJS(app, 'pages/dashboard/dashboard', '/dashboard', { title: 'Dashboard' });
+    registerEJS(app, 'pages/dashboard/dataCenter', '/data_center', { title: 'Data Center' });
 }
 
 function registerEJS(app: express.Express, folderPath: string, browserPath: string, options?: object) {

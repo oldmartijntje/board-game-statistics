@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../../components/technical/head') %>
+</head>
+
+<body>
+    <%- include('../../components/default/header') %>
+
+        <div class="main-container">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <%- include('../../components/default/loggedInSidebar') %>
+
+                        <div class="col-lg-9">
+                            <div class="site-card info-card">
+                                <div class="logo">
+                                    <div class="brand-name">Welcome :3</div>
+                                </div>
+
+                                <div class="info-text">
+                                    <p>
+                                        Last game played
+                                    </p>
+                                    <p>
+                                        Statistics last x days
+                                    </p>
+
+                                    <p>
+                                        Collection status
+                                    </p>
+
+                                    <p>
+                                        Graph of daily plays last 3 weeks
+                                    </p>
+
+                                    <p>
+                                        Pie chart days of week and numbers of players
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/helperMethods.js"></script>
+
+
+
+        <%- include('../../components/technical/bootstrapAndTracking') %>
+</body>
+
+</html>

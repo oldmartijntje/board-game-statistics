@@ -1,3 +1,4 @@
+<span style="display: none;" id="sideBarPageReference" data-page="<%= title %>"></span>
 <button class="sidebar-toggle" id="sidebarToggle">
     <i class="fas fa-bars"></i>
 </button>
@@ -19,52 +20,52 @@
         <div class="sidebar-body">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="/dashboard">
+                    <a class="nav-link" href="/dashboard" data-page="Dashboard">
                         <i class="fas fa-chart-line"></i> Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/insights">
+                    <a class="nav-link" href="/insights" data-page="Insights">
                         <i class="fas fa-lightbulb"></i> Insights
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/challanges">
+                    <a class="nav-link" href="/challanges" data-page="Challanges">
                         <i class="fas fa-trophy"></i> Challanges
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/plays">
+                    <a class="nav-link" href="/plays" data-page="Plays">
                         <i class="fas fa-play"></i> Plays
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/games">
+                    <a class="nav-link" href="/games" data-page="Games">
                         <i class="fas fa-dice"></i> Games
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/players">
+                    <a class="nav-link" href="/players" data-page="Players">
                         <i class="fas fa-users"></i> Players
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/locations">
+                    <a class="nav-link" href="/locations" data-page="Locations">
                         <i class="fas fa-map-marker-alt"></i> Locations
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/settings">
+                    <a class="nav-link" href="/settings" data-page="Settings">
                         <i class="fas fa-cog"></i> Settings
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/data_center">
+                    <a class="nav-link" href="/data_center" data-page="Data Center">
                         <i class="fas fa-database"></i> Data Center
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/engine">
+                    <a class="nav-link" href="/engine" data-page="Engine">
                         <i class="fas fa-wrench"></i> Engine
                     </a>
                 </li>
@@ -73,8 +74,9 @@
     </div>
 </div>
 
-<!-- Sidebar Toggle Script -->
 <script>
+    let sideBarPageReference = document.getElementById("sideBarPageReference").dataset.page;
+    let sideBarPageReferenceItems = document.querySelectorAll('.nav-link');
     document.addEventListener('DOMContentLoaded', function () {
         const sidebar = document.getElementById('sidebar');
         const sidebarToggle = document.getElementById('sidebarToggle');
@@ -99,5 +101,11 @@
                 overlay.classList.remove('show');
             }
         });
+    });
+
+    sideBarPageReferenceItems.forEach(element => {
+        if (element.dataset.page == sideBarPageReference) {
+            element.classList.add("active");
+        }
     });
 </script>
