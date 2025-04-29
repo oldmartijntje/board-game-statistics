@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../../components/technical/head') %>
+</head>
+
+<body>
+    <%- include('../../components/default/header') %>
+
+        <div class="main-container">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <%- include('../../components/default/loggedInSidebar') %>
+
+                        <div class="col-lg-9">
+                            <div class="site-card info-card">
+                                <div class="logo">
+                                    <div class="brand-name">Engine</div>
+                                </div>
+
+                                <div class="info-text">
+                                    <p>
+                                        Website Version:
+                                        <span style="color:var(--primary)">
+                                            <%= versionNr %>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/helperMethods.js"></script>
+
+
+
+        <%- include('../../components/technical/bootstrapAndTracking') %>
+</body>
+
+</html>

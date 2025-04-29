@@ -6,6 +6,7 @@ import express from "express";
 import { connectToDatabase } from "./mainDatabase";
 import { loginRouter } from "./controllers/login.routes";
 import { static as expressStatic } from 'express';
+import { VERSION_NUMBER } from './versionNr';
 
 // Load environment variables from the .env file, where the MONGO_URI is configured
 // my localhost .env: "MONGO_URI=mongodb://localhost:27017/BG_STATS_WEB"
@@ -77,9 +78,12 @@ function registerPages(app: express.Express) {
     registerEJS(app, 'pages/register', '/register', { title: 'Register' });
     registerEJS(app, 'pages/dashboard/dashboard', '/dashboard', { title: 'Dashboard' });
     registerEJS(app, 'pages/dashboard/dataCenter', '/data_center', { title: 'Data Center' });
+    registerEJS(app, 'pages/dashboard/engine', '/engine', { title: 'Engine' });
 }
 
-function registerEJS(app: express.Express, folderPath: string, browserPath: string, options?: object) {
+function registerEJS(app: express.Express, folderPath: string, browserPath: string, options: any = {}) {
+    options["versionNr"] = VERSION_NUMBER.readableFormat;
+    options["versionDataStringified"] = JSON.stringify(VERSION_NUMBER);
     app.get(browserPath, (req, res) => {
         res.render(folderPath, options);
     });
