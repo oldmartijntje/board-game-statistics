@@ -2,26 +2,33 @@ const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
 
+const DEFAULT_URI = 'mongodb://localhost:27017/BG_STATS_WEB';
+
 (async function () {
     try {
-        const { uriChoice } = await inquirer.prompt([{
-            type: 'list',
-            name: 'uriChoice',
-            message: 'Select Mongo connection string:',
-            choices: ['example', 'custom'],
-        }]);
+        const answers = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'uriChoice',
+                message: 'Select Mongo connection string:',
+                choices: [
+                    { name: `Use default (${DEFAULT_URI})`, value: 'default' },
+                    { name: 'Enter custom URI…', value: 'custom' }
+                ]
+            },
+            {
+                type: 'input',
+                name: 'mongoUri',
+                message: 'Enter Mongo URI:',
+                when: answers => answers.uriChoice === 'custom',
+                default: DEFAULT_URI
+            }
+        ]);
 
-        const { mongoUri } = await inquirer.prompt([{
-            type: 'input',
-            name: 'mongoUri',
-            message: 'Enter Mongo URI:',
-            when: () => uriChoice === 'custom',
-            default: 'mongodb://localhost:27017/BG_STATS_WEB'
-        }]);
-
-        const finalUri = uriChoice === 'example'
-            ? 'mongodb://localhost:27017/BG_STATS_WEB'
-            : mongoUri;
+        const finalUri = answers.uriChoice === 'default'
+            ? DEFAULT_URI
+            : answers.mongoUri;
+        console.log('→ Final URI:', finalUri);
 
         const { portChoice } = await inquirer.prompt([{
             type: 'list',
