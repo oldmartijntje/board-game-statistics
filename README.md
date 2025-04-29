@@ -10,9 +10,7 @@ This requires you either one of the followig:
 
 Run `npm i` in the root folder, this installs all packages.
 
-Then you create a file called `.env` in the root folder. In this file you add your mongodb connection string. If you are running it locally it should look something like this: `MONGO_URI=mongodb://localhost:27017/BG_STATS_WEB`.
-
-Wow that is about all it takes :3
+Then we run `npm run setup` in that root folder, this gives you steps with thingss you have to walk through. My default local hosted mongodb conn string is `mongodb://localhost:27017/BG_STATS_WEB`, but my hosted conn string looks like `mongodb://<username>:<password>@<ipadress>:<port>`. Make sure you find your correct conn string.
 
 ## Running
 
