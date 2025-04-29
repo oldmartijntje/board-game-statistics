@@ -6,6 +6,52 @@
 </head>
 
 <body>
+    <style>
+        .import-section {
+            max-width: 500px;
+            text-align: left;
+            position: relative;
+        }
+
+        .import-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .import-header h2 {
+            margin: 0;
+            color: var(--secondary);
+            font-size: 1.25rem;
+        }
+
+        .info-button {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .info-button:hover {
+            color: var(--secondary);
+        }
+
+        .import-text {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            color: var(--text-light);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn-upload {
+            display: inline-block;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+    </style>
     <%- include('../../components/default/header') %>
 
         <div class="main-container">
@@ -17,28 +63,26 @@
                         <div class="col-lg-9">
                             <div class="site-card info-card">
                                 <div class="logo">
-                                    <div class="brand-name">Welcome :3</div>
+                                    <div class="brand-name">Data Center</div>
                                 </div>
 
-                                <div class="info-text">
-                                    <p>
-                                        Last game played
+                                <div class="site-card import-section centerDiv">
+                                    <div class="import-header">
+                                        <h2>Import Boardgame Stats</h2>
+                                        <a target="_blank" href="https://github.com/oldmartijntje/board-game-statistics"
+                                            class="info-button" aria-label="More info about importing/exporting">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                    </div>
+                                    <p class="import-text">
+                                        Import your boardgame stats export here. This can be a single play or all the
+                                        data at once.
+                                        You are looking for either a <code>.json</code> file or a <code>.bgsplay</code>
+                                        file.
                                     </p>
-                                    <p>
-                                        Statistics last x days
-                                    </p>
-
-                                    <p>
-                                        Collection status
-                                    </p>
-
-                                    <p>
-                                        Graph of daily plays last 3 weeks
-                                    </p>
-
-                                    <p>
-                                        Pie chart days of week and numbers of players
-                                    </p>
+                                    <input type="file" id="bgs-import" class="form-control file-input"
+                                        accept=".json, .bgsplay" />
+                                    <label for="bgs-import" class="btn-primary btn-upload">Choose file…</label>
                                 </div>
                             </div>
                         </div>
