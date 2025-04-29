@@ -14,7 +14,7 @@ Then we run `npm run setup` in that root folder, this gives you steps with thing
 
 ## Running
 
-run `npx ts-node src/server.ts` to start the backend. The console will give you the port the front-end is on. This port can be changed via the `settings.json`
+run `npm run start` to start the backend. The console will give you the port the front-end is on. This port can be changed via the `settings.json`
 
 ### Creating the first account
 
