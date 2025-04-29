@@ -5,6 +5,7 @@ import fs from 'fs';
 import express from "express";
 import { connectToDatabase } from "./mainDatabase";
 import { loginRouter } from "./controllers/login.routes";
+import { dataRouter } from "./controllers/data.routes";
 import { static as expressStatic } from 'express';
 import { VERSION_NUMBER } from './versionNr';
 
@@ -57,6 +58,7 @@ main().then(async () => {
 
         app.use(cors());
         app.use("/api/login", loginRouter);
+        app.use("/api/data_center", dataRouter);
         app.use(expressStatic(staticHtmlPath));
 
         registerPages(app);
