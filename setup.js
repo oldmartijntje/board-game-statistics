@@ -33,7 +33,7 @@ const DEFAULT_URI = 'mongodb://localhost:27017/BG_STATS_WEB';
         const { portChoice } = await inquirer.prompt([{
             type: 'list',
             name: 'portChoice',
-            message: 'Select port for application:',
+            message: 'Select port for web application:',
             choices: ['4200', '3000', 'custom'],
         }]);
 
