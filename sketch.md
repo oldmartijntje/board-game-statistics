@@ -105,7 +105,7 @@ Players:
         {
             "tagRefId": 3,
             "metaData": {
-            "date": "2024-08-09 21:42:14"
+                "date": "2024-08-09 21:42:14"
             }
         }
     ]
@@ -217,6 +217,7 @@ plays:
     "durationMin": 31,
     "ignored": false,
     "manualWinner": false,
+    "comments": "", // optional
     "rounds": 0,
     "bggId": 68110692, // optional
     "bggLastSync": "2024-08-20 23:49:47", // optional
