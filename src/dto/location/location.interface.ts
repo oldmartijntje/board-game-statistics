@@ -1,29 +1,23 @@
 import { Schema } from "mongoose";
 
-export interface PlayerTag {
+export interface LocationTag {
     tagRefId: number;
     metaData?: string;
 }
 
-export interface Player {
+export interface Location {
     uuid: string;
     id: number;
     name: string;
-    isAnonymous: boolean;
     modificationDate: string;
-    bggUsername?: string;
-    metaData?: string;
-    tags?: PlayerTag[];
+    tags?: LocationTag[];
 }
 
-export const playerSchema = new Schema<Player>({
+export const locationSchema = new Schema<Location>({
     uuid: { type: String, required: true },
     id: { type: Number, required: true },
     name: { type: String, required: true },
-    isAnonymous: { type: Boolean, required: true },
     modificationDate: { type: String, required: true },
-    bggUsername: { type: String },
-    metaData: { type: String },
     tags: [{
         tagRefId: { type: Number, required: true },
         metaData: { type: String }
