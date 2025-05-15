@@ -1,31 +1,23 @@
 import { Schema } from "mongoose";
 
-export interface PlayerTag {
-    tagRefId: number;
-    metaData?: string;
-}
-
-export interface Player {
+export interface Group {
     uuid: string;
     id: number;
     name: string;
-    isAnonymous: boolean;
+    type: string;
+    isInternal: boolean;
+    isDefault: boolean;
     modificationDate: string;
-    bggUsername?: string;
     metaData?: string;
-    tags?: PlayerTag[];
 }
 
-export const playerSchema = new Schema<Player>({
+export const groupSchema = new Schema<Group>({
     uuid: { type: String, required: true },
     id: { type: Number, required: true },
     name: { type: String, required: true },
-    isAnonymous: { type: Boolean, required: true },
+    type: { type: String, required: true },
+    isInternal: { type: Boolean, required: true },
+    isDefault: { type: Boolean, required: true },
     modificationDate: { type: String, required: true },
-    bggUsername: { type: String },
-    metaData: { type: String },
-    tags: [{
-        tagRefId: { type: Number, required: true },
-        metaData: { type: String }
-    }]
+    metaData: { type: String }
 });
