@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-
+// imma just ignore these xD
 export interface Group {
     uuid: string;
     id: number;

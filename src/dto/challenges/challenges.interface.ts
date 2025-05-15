@@ -1,11 +1,14 @@
 import { Schema } from "mongoose";
+import * as mongodb from "mongodb";
 
 export interface ChallengeGame {
     dontInclude: boolean;
     gameRefId: number;
+    _gameRefId: mongodb.ObjectId;
 }
 
 export interface Challenge {
+    _id?: mongodb.ObjectId;
     uuid: string;
     name: string;
     modificationDate: string;

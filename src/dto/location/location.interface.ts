@@ -1,11 +1,14 @@
 import { Schema } from "mongoose";
+import * as mongodb from "mongodb";
 
 export interface LocationTag {
     tagRefId: number;
+    _tagRefId: mongodb.ObjectId;
     metaData?: string;
 }
 
 export interface Location {
+    _id?: mongodb.ObjectId;
     uuid: string;
     id: number;
     name: string;

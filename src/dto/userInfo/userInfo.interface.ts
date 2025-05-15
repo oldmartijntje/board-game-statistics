@@ -1,7 +1,10 @@
 import { Schema } from "mongoose";
+import * as mongodb from "mongodb";
 
 export interface UserInfo {
     meRefId: number;
+    _meRefId?: mongodb.ObjectId;
+    _id?: mongodb.ObjectId;
     bggUsername: string;
     exportDate: string;
     appVersion: string;

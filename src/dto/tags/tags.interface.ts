@@ -1,5 +1,8 @@
-// TypeScript Interface
+import * as mongodb from "mongodb";
+import { Schema } from "mongoose";
+
 export interface Tag {
+    _id?: mongodb.ObjectId;
     uuid: string;
     id: number;
     name: string;
@@ -11,9 +14,6 @@ export interface Tag {
     modificationDate: string;
     metaData?: string;
 }
-
-// Mongoose Schema
-import { Schema } from "mongoose";
 
 export const tagSchema = new Schema<Tag>({
     uuid: { type: String, required: true },

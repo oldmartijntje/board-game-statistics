@@ -1,11 +1,14 @@
 import { Schema } from "mongoose";
+import * as mongodb from "mongodb";
 
 export interface PlayerTag {
     tagRefId: number;
     metaData?: string;
+    _tagRefId: mongodb.ObjectId;
 }
 
 export interface Player {
+    _id?: mongodb.ObjectId;
     uuid: string;
     id: number;
     name: string;

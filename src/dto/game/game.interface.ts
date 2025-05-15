@@ -1,4 +1,5 @@
 import { Schema } from "mongoose";
+import * as mongodb from "mongodb";
 
 export interface GameCopy {
     uuid?: string;
@@ -25,12 +26,14 @@ export interface GameCopy {
 
 export interface GameTag {
     tagRefId: number;
+    _tagRefId: mongodb.ObjectId;
     metaData?: string;
 }
 
 export interface Game {
     uuid: string;
     id: number;
+    _id?: mongodb.ObjectId;
     name: string;
     modificationDate: string;
     cooperative: boolean;

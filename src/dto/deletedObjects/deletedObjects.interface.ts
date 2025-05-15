@@ -1,6 +1,8 @@
 import { Schema } from "mongoose";
+import * as mongodb from "mongodb";
 
 export interface DeletedObject {
+    _id?: mongodb.ObjectId;
     uuid: string;
     modificationDate: string;
     objectType: string;
