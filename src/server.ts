@@ -3,6 +3,8 @@ import cors from "cors";
 import path from 'path';
 import fs from 'fs';
 import express from "express";
+import GlobalData from "./dto/globalData/globalData.interface"
+import { Worker, MessageChannel } from 'worker_threads';
 import { connectToDatabase } from "./mainDatabase";
 import { loginRouter } from "./controllers/login.routes";
 import { dataRouter } from "./controllers/data.routes";
@@ -43,6 +45,16 @@ async function main() {
     if (!settings) {
         return;
     }
+}
+
+const worker = new Worker('./src/threading/worker.js', {
+    workerData: {
+        path: './worker.ts',
+    }
+});
+
+export const globalData: GlobalData = {
+    worker: worker
 }
 
 main().then(async () => {

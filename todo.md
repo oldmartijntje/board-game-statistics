@@ -1,0 +1,3 @@
+- [ ] An endpoint for gettign the status of the worker.
+    - [ ] front-end
+    - [ ] back-end
