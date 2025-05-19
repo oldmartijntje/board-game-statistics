@@ -4,7 +4,7 @@ import { QueueItemProgression } from "./queueItemProgression.interface";
 export interface QueueItemInterface {
     _id?: mongodb.ObjectId;
     _userId: mongodb.ObjectId;
-    uploadTime: Date;
+    uploadTime?: Date;
     progress: QueueItemProgression;
     tags?: object;
     groups?: object;
