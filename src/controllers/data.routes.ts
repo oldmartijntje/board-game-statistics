@@ -6,6 +6,8 @@ import { Worker, MessageChannel } from 'worker_threads';
 import { WorkerEnum } from "../threading/WorkerEnum";
 import WorkerMessage from "../../src/dto/workerMessage/workerMessage.interface";
 import { PlayHandler } from "../../src/models/PlayHandler";
+import { RawQueueItemInterface } from "../../src/dto/queueItem/rawQueueItem.interface";
+import { ReturnValueInterface } from "../../src/dto/returnValue/returnValue.interface";
 
 export const dataRouter = express.Router();
 dataRouter.use(express.json());
@@ -17,7 +19,7 @@ dataRouter.post("/", async (_req, res) => {
     try {
         const username = _req.body.username;
         const sessionToken = _req.body.sessionToken;
-        const data = _req.body.data;
+        const data: any = _req.body.data;
         if (!sessionToken || !data || !username) {
             res.status(400).send({ "message": "Session token, data and username are required" });
             return;
@@ -33,11 +35,13 @@ dataRouter.post("/", async (_req, res) => {
             res.status(500).send({ "message": "¯\\_(ツ)_/¯" });
         }
         const handler = new PlayHandler();
-        // handler.Upload({}, user)
-
-
-        res.status(200).send({ "message": "Login Successfull." })
-
+        const validData: ReturnValueInterface = handler.IsValidDataFormat(data);
+        if (validData.error) {
+            res.status(validData.statusCode).send({ "message": validData.message, "data": validData.data });
+        }
+        const validatedData: RawQueueItemInterface = handler.ValidateDataFormat(data);
+        const returnValue: ReturnValueInterface = await handler.Upload(validatedData, user)
+        res.status(returnValue.statusCode).send({ "message": returnValue.message, "data": returnValue.data });
     } catch (error) {
         res.status(500).send({ "message": error.message });
     }
