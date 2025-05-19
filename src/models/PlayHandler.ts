@@ -3,6 +3,7 @@ import * as mongodb from "mongodb";
 import { users, queueItems } from "../mainDatabase";
 import { UserInterface } from "../../src/dto/user/user.interface";
 import { ReturnValueInterface } from "../../src/dto/returnValue/returnValue.interface";
+import { QueueItemInterface } from "../../src/dto/queueItem/queueItem.interface";
 
 
 export class PlayHandler {
@@ -10,17 +11,73 @@ export class PlayHandler {
 
     }
 
+    private countItems<T>(list: T[] | undefined): number {
+        return list?.length ?? 0;
+    }
+
     public async Upload(item: RawQueueItemInterface, user: UserInterface): Promise<ReturnValueInterface> {
-        return;
+        if (user._id == undefined) {
+            return {
+                error: true,
+                message: "Somehow evaded login? But you got caught.",
+                statusCode: 401
+            }
+        }
+        let count = 0;
+        count += this.countItems(item.players);
+        count += this.countItems(item.locations);
+        count += this.countItems(item.games);
+        count += this.countItems(item.plays);
+        count += this.countItems(item.tags);
+        count += this.countItems(item.groups);
+        count += this.countItems(item.challenges);
+        count += this.countItems(item.deletedObjects);
+        count += item.deletedObjects != undefined ? 1 : 0
+        const queueItemInterface: QueueItemInterface = {
+            _userId: user._id,
+            progress: {
+                hasStarted: false,
+                completed: 0,
+                estimatedTodo: count,
+                errors: []
+            },
+            players: item.players,
+            locations: item.locations,
+            games: item.games,
+            plays: item.plays,
+            userInfo: item.userInfo,
+            tags: item.tags,
+            groups: item.groups,
+            challenges: item.challenges,
+            deletedObjects: item.deletedObjects
+        }
+        try {
+            const newQueueItem = await queueItems.create(queueItemInterface);
+            if (!newQueueItem) {
+                throw new Error('Failed to create queue item: returned null or undefined');
+            }
+        } catch (e) {
+            return {
+                error: true,
+                message: e,
+                statusCode: 500
+            }
+        }
+
+        return {
+            error: false,
+            message: "Queue Item created!",
+            statusCode: 200
+        }
     }
 
     public IsValidDataFormat(obj: any): ReturnValueInterface {
         if (obj &&
-            typeof obj.players === 'object' &&
-            typeof obj.locations === 'object' &&
-            typeof obj.plays === 'object' &&
-            typeof obj.userInfo === 'object' &&
-            typeof obj.games === 'object') {
+            Array.isArray(obj.players) &&
+            Array.isArray(obj.locations) &&
+            Array.isArray(obj.plays) &&
+            Array.isArray(obj.userInfo) &&
+            Array.isArray(obj.games)) {
             return {
                 error: false,
                 message: "kk",
@@ -50,11 +107,11 @@ export class PlayHandler {
             }
         } else {
             return {
-                players: undefined,
-                locations: undefined,
-                games: undefined,
-                plays: undefined,
-                userInfo: undefined
+                players: [],
+                locations: [],
+                games: [],
+                plays: [],
+                userInfo: []
             }
         }
     }

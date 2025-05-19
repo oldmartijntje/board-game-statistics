@@ -6,13 +6,13 @@ export interface QueueItemInterface {
     _userId: mongodb.ObjectId;
     uploadTime?: Date;
     progress: QueueItemProgression;
-    tags?: object;
-    groups?: object;
-    players?: object;
-    locations?: object;
-    games?: object;
-    plays?: object;
-    challenges?: object;
-    deletedObjects?: object;
+    tags?: object[];
+    groups?: object[];
+    players: object[];
+    locations: object[];
+    games: object[];
+    plays: object[];
+    challenges?: object[];
+    deletedObjects?: object[];
     userInfo?: object;
 }
