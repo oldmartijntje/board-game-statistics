@@ -2,8 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 export const queueItemJsonSchema = {
     _userId: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
-    uploadTime: { type: Date, required: true },
-    estimatedLoops: { type: Number, required: true },
+    uploadTime: { type: Date, default: Date.now, required: true },
     progress: { type: Schema.Types.Mixed, required: true },
 
     tags: { type: Schema.Types.Mixed },

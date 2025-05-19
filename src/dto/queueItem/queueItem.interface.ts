@@ -5,7 +5,6 @@ export interface QueueItem {
     _id?: mongodb.ObjectId;
     _userId: mongodb.ObjectId;
     uploadTime: Date;
-    estimatedLoops: Number;
     progress: QueueItemProgression;
     tags?: object;
     groups?: object;
