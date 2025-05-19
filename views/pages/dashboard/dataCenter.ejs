@@ -46,10 +46,28 @@
             display: none;
         }
 
-        .btn-upload {
+        .btn-upload,
+        .btn-send {
             display: inline-block;
             cursor: pointer;
             margin-top: 0.5rem;
+        }
+
+        #selected-file-name {
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        .butn {
+            border-radius: 0.375rem;
+            color: var(--text-light);
+        }
+
+        .butn:disabled {
+            color: var(--text-muted);
+
+            background-color: var(--secondary);
         }
     </style>
     <%- include('../../components/default/header') %>
@@ -83,6 +101,8 @@
                                     <input type="file" id="bgs-import" class="form-control file-input"
                                         accept=".json, .bgsplay" />
                                     <label for="bgs-import" class="btn-primary btn-upload">Choose file…</label>
+                                    <p id="selected-file-name">No file selected</p>
+                                    <button id="upload-btn" class="butn btn-primary btn-send" disabled>Upload</button>
                                 </div>
                             </div>
                         </div>
@@ -91,6 +111,57 @@
         </div>
 
         <script src="/helperMethods.js"></script>
+        <script>
+            const fileInput = document.getElementById('bgs-import');
+            const selectedFileName = document.getElementById('selected-file-name');
+            const uploadBtn = document.getElementById('upload-btn');
+
+            let selectedFile = null;
+
+            fileInput.addEventListener('change', () => {
+                selectedFile = fileInput.files[0];
+                if (selectedFile) {
+                    selectedFileName.textContent = `Selected file: ${selectedFile.name}`;
+                    uploadBtn.disabled = false;
+                } else {
+                    selectedFileName.textContent = 'No file selected';
+                    uploadBtn.disabled = true;
+                }
+            });
+
+            uploadBtn.addEventListener('click', async () => {
+                if (!selectedFile) return;
+
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    try {
+                        const text = reader.result;
+                        const payload = { body: JSON.parse(text) };
+
+                        const resp = await fetch('/api/boardgame-import', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!resp.ok) throw new Error(`Server error ${resp.status}`);
+                        const result = await resp.json();
+                        console.log('Import parsed and sent:', result);
+                        alert('File uploaded successfully!');
+                    } catch (err) {
+                        console.error('Failed to read/parse/send:', err);
+                        alert('Error uploading file. Check console for details.');
+                    }
+                };
+                reader.onerror = () => {
+                    console.error('FileReader error', reader.error);
+                    alert('File reading failed.');
+                };
+                reader.readAsText(selectedFile);
+            });
+        </script>
 
 
 
