@@ -138,7 +138,7 @@
                         const text = reader.result;
                         const payload = { body: JSON.parse(text) };
 
-                        const resp = await fetch('/api/boardgame-import', {
+                        const resp = await fetch('/api/data_center/', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
