@@ -10,7 +10,8 @@ import { RawQueueItemInterface } from "../../src/dto/queueItem/rawQueueItem.inte
 import { ReturnValueInterface } from "../../src/dto/returnValue/returnValue.interface";
 
 export const dataRouter = express.Router();
-dataRouter.use(express.json());
+dataRouter.use(express.json({ limit: '5mb' }));
+dataRouter.use(express.urlencoded({ limit: '5mb', extended: true }))
 
 /**
  * Upload a play
