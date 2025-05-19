@@ -27,7 +27,7 @@ dataRouter.post("/", async (_req, res) => {
         const auth = new Authenticator();
         const authenticationResponse = await auth.authenticateBySessionToken(username, sessionToken, false);
         if (!authenticationResponse) {
-            res.status(403).send({ "message": "Invalid SessionToken and username combination." });
+            res.status(401).send({ "message": "Invalid SessionToken and username combination." });
             return;
         }
         const user = auth.getUserData();

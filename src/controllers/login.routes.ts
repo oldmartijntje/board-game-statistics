@@ -22,7 +22,7 @@ loginRouter.post("/", async (_req, res) => {
         }
         await auth.authenticateByLogin(username, password)
         if (!auth.isAuthorised()) {
-            res.status(403).send({ "message": "Invalid username and password combination." });
+            res.status(401).send({ "message": "Invalid username and password combination." });
             return
         }
         const sessionToken = auth.getSessionToken();
@@ -82,7 +82,7 @@ loginRouter.post("/validateToken", async (_req, res) => {
         const auth = new Authenticator();
         const authenticationResponse = await auth.authenticateBySessionToken(username, sessionToken, false);
         if (!authenticationResponse) {
-            res.status(403).send({ "message": "Invalid SessionToken and username combination." });
+            res.status(401).send({ "message": "Invalid SessionToken and username combination." });
             return;
         }
 
@@ -106,7 +106,7 @@ loginRouter.post("/refreshToken", async (_req, res) => {
         const auth = new Authenticator();
         const authenticationResponse = await auth.refreshSessionToken(username, refreshToken);
         if (!authenticationResponse) {
-            res.status(403).send({ "message": "Invalid refreshToken and username combination" });
+            res.status(401).send({ "message": "Invalid refreshToken and username combination" });
             return;
         }
 
