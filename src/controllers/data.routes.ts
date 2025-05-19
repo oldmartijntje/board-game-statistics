@@ -20,7 +20,7 @@ dataRouter.post("/", async (_req, res) => {
     try {
         const username = _req.body.username;
         const sessionToken = _req.body.sessionToken;
-        const data: any = _req.body.data;
+        const data: any = _req.body.data; // it is an object
         if (!sessionToken || !data || !username) {
             res.status(400).send({ "message": "Session token, data and username are required" });
             return;
