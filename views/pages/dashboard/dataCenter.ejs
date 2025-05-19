@@ -138,6 +138,7 @@
                     window.open("/login")
                     return;
                 }
+                data = JSON.parse(data)
                 let username = data.username;
                 let token = data.token;
 
