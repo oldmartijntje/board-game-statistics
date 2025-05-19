@@ -5,6 +5,7 @@ import { globalData } from "../../src/server";
 import { Worker, MessageChannel } from 'worker_threads';
 import { WorkerEnum } from "../threading/WorkerEnum";
 import WorkerMessage from "../../src/dto/workerMessage/workerMessage.interface";
+import { PlayHandler } from "../../src/models/PlayHandler";
 
 export const dataRouter = express.Router();
 dataRouter.use(express.json());
@@ -27,12 +28,16 @@ dataRouter.post("/", async (_req, res) => {
             res.status(403).send({ "message": "Invalid SessionToken and username combination." });
             return;
         }
-
-
+        const user = auth.getUserData();
+        if (user == undefined) {
+            res.status(500).send({ "message": "¯\\_(ツ)_/¯" });
+        }
+        const handler = new PlayHandler();
+        // handler.Upload({}, user)
 
 
         res.status(200).send({ "message": "Login Successfull." })
-        res.status(501).send({ "message": "Unexpected logic escape: How did this occur?" });
+
     } catch (error) {
         res.status(500).send({ "message": error.message });
     }
