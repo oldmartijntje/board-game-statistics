@@ -111,6 +111,7 @@
         </div>
 
         <script src="/helperMethods.js"></script>
+        <script src="/loadSession.js"></script>
         <script>
             const fileInput = document.getElementById('bgs-import');
             const selectedFileName = document.getElementById('selected-file-name');
@@ -131,12 +132,24 @@
 
             uploadBtn.addEventListener('click', async () => {
                 if (!selectedFile) return;
+                let data = localStorage.getItem("oldma_game_stats")
+                if (data == null) {
+                    alert("Session Expired, Please log back in!")
+                    window.open("/login")
+                    return;
+                }
+                let username = data.username;
+                let token = data.token;
 
                 const reader = new FileReader();
                 reader.onload = async () => {
                     try {
                         const text = reader.result;
-                        const payload = { body: JSON.parse(text) };
+                        const payload = {
+                            username: username,
+                            sessionToken: token,
+                            data: JSON.parse(text)
+                        };
 
                         const resp = await fetch('/api/data_center/', {
                             method: 'POST',
