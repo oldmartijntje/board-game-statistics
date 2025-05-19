@@ -34,15 +34,18 @@ dataRouter.post("/", async (_req, res) => {
         const user = auth.getUserData();
         if (user == undefined) {
             res.status(500).send({ "message": "¯\\_(ツ)_/¯" });
+            return;
         }
         const handler = new PlayHandler();
         const validData: ReturnValueInterface = handler.IsValidDataFormat(data);
         if (validData.error) {
             res.status(validData.statusCode).send({ "message": validData.message, "data": validData.data });
+            return;
         }
         const validatedData: RawQueueItemInterface = handler.ValidateDataFormat(data);
         const returnValue: ReturnValueInterface = await handler.Upload(validatedData, user)
         res.status(returnValue.statusCode).send({ "message": returnValue.message, "data": returnValue.data });
+        return;
     } catch (error) {
         res.status(500).send({ "message": error.message });
     }
