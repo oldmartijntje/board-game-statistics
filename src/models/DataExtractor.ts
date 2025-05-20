@@ -1,3 +1,127 @@
+import { QueueItemInterface } from "../dto/queueItem/queueItem.interface.js";
+import { QueueItemProgression } from "../dto/queueItem/queueItemProgression.interface.js";
+import { ReturnValueInterface } from "../dto/returnValue/returnValue.interface.js";
+import { queueItems } from '../../src/mainDatabase';
+
+enum processSelector {
+    players,
+    games,
+    locations,
+    tags,
+    challenges,
+    groups,
+    deletedObjects,
+    plays,
+    userInfo,
+    null
+}
+
 export class DataExtractor {
-    constructor() { }
+    loadedItem: QueueItemInterface;
+    selectedProcess: processSelector;
+    active: boolean = true;
+    constructor(queueItemInterface: QueueItemInterface) {
+        this.loadedItem = queueItemInterface;
+    }
+
+    /**
+     * Check whether `this.active` is `false` in a `ReturnValueInterface` format
+     * @returns 
+     */
+    private CheckActivity(): ReturnValueInterface {
+        if (!this.active) {
+            return {
+                error: true,
+                message: "Can't run after Submission",
+                statusCode: 500
+            }
+        } else {
+            return {
+                error: false,
+                message: "Ok",
+                statusCode: 200
+            }
+        }
+    }
+
+    /**
+     * Find the dict / list which we are going grab an item from.
+     * Unless it is the first time this queueItem has been handled.
+     * @returns Whether it succeeded or not
+     */
+    public async CheckAllDicts(): Promise<ReturnValueInterface> {
+        if (this.CheckActivity().error) return this.CheckActivity();
+
+        let progress: QueueItemProgression = this.loadedItem.progress;
+        if (!progress.hasStarted) {
+            progress.hasStarted = true;
+            let response: ReturnValueInterface = await this.ConflictHandler();
+            return response;
+        }
+
+        if (this.loadedItem.players.length > 0) {
+            this.selectedProcess = processSelector.players;
+        } else if (this.loadedItem.games.length > 0) {
+            this.selectedProcess = processSelector.games;
+        } else if (this.loadedItem.locations.length > 0) {
+            this.selectedProcess = processSelector.locations;
+        } else if (this.loadedItem.tags != undefined && this.loadedItem.tags.length > 0) {
+            this.selectedProcess = processSelector.tags;
+        } else if (this.loadedItem.challenges != undefined && this.loadedItem.challenges.length > 0) {
+            this.selectedProcess = processSelector.challenges;
+        } else if (this.loadedItem.groups != undefined && this.loadedItem.groups.length > 0) {
+            this.selectedProcess = processSelector.groups;
+        } else if (this.loadedItem.deletedObjects != undefined && this.loadedItem.deletedObjects.length > 0) {
+            this.selectedProcess = processSelector.deletedObjects;
+        } else if (this.loadedItem.plays.length > 0) {
+            this.selectedProcess = processSelector.plays;
+        } else if (this.loadedItem.userInfo != undefined) {
+            this.selectedProcess = processSelector.userInfo;
+        } else {
+            this.selectedProcess = processSelector.null;
+        }
+
+        return {
+            error: false,
+            message: "Added Item",
+            statusCode: 200,
+            data: { continue: true, date: new Date(Date.now()) }
+        }
+    }
+
+    /**
+     * 
+     * @returns Whether it succeeded or not
+     */
+    public async HandleNext(): Promise<ReturnValueInterface> {
+        if (this.CheckActivity().error) return this.CheckActivity();
+
+
+    }
+
+    /**
+     * 
+     * @returns Whether it succeeded or not
+     */
+    public async SubmitChanges(): Promise<ReturnValueInterface> {
+        if (this.CheckActivity().error) return this.CheckActivity();
+        this.active = false;
+
+
+    }
+
+    /**
+     * 
+     * @returns Whether it succeeded or not
+     */
+    private async ConflictHandler(): Promise<ReturnValueInterface> {
+        if (this.CheckActivity().error) return this.CheckActivity();
+
+        return {
+            error: false,
+            message: "First time handling this data.",
+            statusCode: 200,
+            data: { continue: false, date: new Date(Date.now()) }
+        };
+    }
 }
