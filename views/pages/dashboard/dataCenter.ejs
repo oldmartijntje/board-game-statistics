@@ -168,6 +168,10 @@
                         console.error('Failed to read/parse/send:', err);
                         alert('Error uploading file. Check console for details.');
                     }
+                    selectedFile = null;
+                    fileInput.value = '';
+                    selectedFileName.textContent = 'No file selected';
+                    uploadBtn.disabled = true;
                 };
                 reader.onerror = () => {
                     console.error('FileReader error', reader.error);
