@@ -1,20 +1,32 @@
 import { RawQueueItemInterface } from "../dto/queueItem/rawQueueItem.interface";
 import * as mongodb from "mongodb";
 import { users, queueItems } from "../mainDatabase";
-import { UserInterface } from "../../src/dto/user/user.interface";
-import { ReturnValueInterface } from "../../src/dto/returnValue/returnValue.interface";
-import { QueueItemInterface } from "../../src/dto/queueItem/queueItem.interface";
+import { UserInterface } from "../dto/user/user.interface";
+import { ReturnValueInterface } from "../dto/returnValue/returnValue.interface";
+import { QueueItemInterface } from "../dto/queueItem/queueItem.interface";
 
 
-export class PlayHandler {
+export class PlaySubmitter {
     constructor() {
 
     }
 
+    /**
+     * Counts the number of items in a list and ignores undefineds
+     *
+     * @param list - A list or undefined.
+     * @returns Number of items in the list or 0
+     */
     private countItems<T>(list: T[] | undefined): number {
         return list?.length ?? 0;
     }
 
+    /**
+     * Upload an RawQueueItemInterface to mongodb
+     * @param item the RawQueueItemInterface
+     * @param user you, loggedin
+     * @returns Promise<ReturnValueInterface>
+     */
     public async Upload(item: RawQueueItemInterface, user: UserInterface): Promise<ReturnValueInterface> {
         if (user._id == undefined) {
             return {
@@ -71,13 +83,18 @@ export class PlayHandler {
         }
     }
 
+    /**
+     * Checks whether or not your `any` object is a valid RawQueueItemInterface
+     * @param obj 
+     * @returns ReturnValueInterface
+     */
     public IsValidDataFormat(obj: any): ReturnValueInterface {
         if (obj &&
-            Array.isArray(obj.players) &&
-            Array.isArray(obj.locations) &&
-            Array.isArray(obj.plays) &&
-            obj.userInfo != undefined &&
-            Array.isArray(obj.games)) {
+            Array.isArray(obj?.players) &&
+            Array.isArray(obj?.locations) &&
+            Array.isArray(obj?.plays) &&
+            obj?.userInfo != undefined &&
+            Array.isArray(obj?.games)) {
             return {
                 error: false,
                 message: "kk",
@@ -92,6 +109,11 @@ export class PlayHandler {
         }
     }
 
+    /**
+     * Converts your `any` object to RawQueueItemInterface
+     * @param data 
+     * @returns RawQueueItemInterface
+     */
     public ValidateDataFormat(data: any): RawQueueItemInterface {
         if (this.IsValidDataFormat(data)) {
             return {
