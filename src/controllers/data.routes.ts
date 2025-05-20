@@ -5,7 +5,7 @@ import { globalData } from "../../src/server";
 import { Worker, MessageChannel } from 'worker_threads';
 import { WorkerEnum } from "../threading/WorkerEnum";
 import WorkerMessage from "../../src/dto/workerMessage/workerMessage.interface";
-import { PlayHandler } from "../../src/models/PlayHandler";
+import { PlaySubmitter } from "../models/PlaySubmitter";
 import { RawQueueItemInterface } from "../../src/dto/queueItem/rawQueueItem.interface";
 import { ReturnValueInterface } from "../../src/dto/returnValue/returnValue.interface";
 
@@ -36,14 +36,14 @@ dataRouter.post("/", async (_req, res) => {
             res.status(500).send({ "message": "¯\\_(ツ)_/¯" });
             return;
         }
-        const handler = new PlayHandler();
-        const validData: ReturnValueInterface = handler.IsValidDataFormat(data);
+        const submitter = new PlaySubmitter();
+        const validData: ReturnValueInterface = submitter.IsValidDataFormat(data);
         if (validData.error) {
             res.status(validData.statusCode).send({ "message": validData.message, "data": validData.data });
             return;
         }
-        const validatedData: RawQueueItemInterface = handler.ValidateDataFormat(data);
-        const returnValue: ReturnValueInterface = await handler.Upload(validatedData, user)
+        const validatedData: RawQueueItemInterface = submitter.ValidateDataFormat(data);
+        const returnValue: ReturnValueInterface = await submitter.Upload(validatedData, user)
         res.status(returnValue.statusCode).send({ "message": returnValue.message, "data": returnValue.data });
         return;
     } catch (error) {
