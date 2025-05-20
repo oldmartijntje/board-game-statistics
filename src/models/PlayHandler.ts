@@ -76,7 +76,7 @@ export class PlayHandler {
             Array.isArray(obj.players) &&
             Array.isArray(obj.locations) &&
             Array.isArray(obj.plays) &&
-            Array.isArray(obj.userInfo) &&
+            obj.userInfo != undefined &&
             Array.isArray(obj.games)) {
             return {
                 error: false,
