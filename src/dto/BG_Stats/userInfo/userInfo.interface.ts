@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 import * as mongodb from "mongodb";
 
-export interface UserInfo {
+export interface UserInfoInterface {
     meRefId: number;
     _meRefId?: mongodb.ObjectId;
     _id?: mongodb.ObjectId;
@@ -12,7 +12,7 @@ export interface UserInfo {
     device: string;
 }
 
-export const userInfoSchema = new Schema<UserInfo>({
+export const userInfoSchema = new Schema<UserInfoInterface>({
     meRefId: { type: Number, required: true },
     bggUsername: { type: String, required: true },
     exportDate: { type: String, required: true },

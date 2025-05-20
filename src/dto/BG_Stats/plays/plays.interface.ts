@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 import * as mongodb from "mongodb";
 
-export interface PlayPlayerScore {
+export interface PlayPlayerScoreInterface {
     score: string | null;
     winner: boolean;
     newPlayer: boolean;
@@ -16,13 +16,13 @@ export interface PlayPlayerScore {
     startPosition?: string;
 }
 
-export interface PlayExpansion {
+export interface PlayExpansionInterface {
     gameRefId?: number;
     _gameRefId: mongodb.ObjectId;
     bggId?: number;
 }
 
-export interface Play {
+export interface PlayInterface {
     _id?: mongodb.ObjectId;
     uuid: string;
     modificationDate: string;
@@ -46,13 +46,13 @@ export interface Play {
     nemestatsId: number;
     scoringSetting: number;
     metaData?: string;
-    playerScores: PlayPlayerScore[];
-    expansionPlays: PlayExpansion[];
+    playerScores: PlayPlayerScoreInterface[];
+    expansionPlays: PlayExpansionInterface[];
     playImages?: string[];
     comments?: string;
 }
 
-export const playSchema = new Schema<Play>({
+export const playSchema = new Schema<PlayInterface>({
     uuid: { type: String, required: true },
     modificationDate: { type: String, required: true },
     entryDate: { type: String, required: true },

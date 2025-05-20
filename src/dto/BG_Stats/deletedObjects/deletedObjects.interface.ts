@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 import * as mongodb from "mongodb";
 
-export interface DeletedObject {
+export interface DeletedObjectInterface {
     _id?: mongodb.ObjectId;
     uuid: string;
     modificationDate: string;
@@ -10,7 +10,7 @@ export interface DeletedObject {
     lastCloudSync: string;
 }
 
-export const deletedObjectSchema = new Schema<DeletedObject>({
+export const deletedObjectSchema = new Schema<DeletedObjectInterface>({
     uuid: { type: String, required: true },
     modificationDate: { type: String, required: true },
     objectType: { type: String, required: true },

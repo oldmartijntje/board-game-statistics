@@ -1,13 +1,13 @@
 import { Schema } from "mongoose";
 import * as mongodb from "mongodb";
 
-export interface ChallengeGame {
+export interface ChallengeGameInterface {
     dontInclude: boolean;
     gameRefId: number;
     _gameRefId: mongodb.ObjectId;
 }
 
-export interface Challenge {
+export interface ChallengeInterface {
     _id?: mongodb.ObjectId;
     uuid: string;
     name: string;
@@ -22,11 +22,11 @@ export interface Challenge {
     value2: number;
     playerUuids?: string[];
     metaData?: string;
-    games: ChallengeGame[];
+    games: ChallengeGameInterface[];
     excludedPlayUuids?: string;
 }
 
-export const challengeSchema = new Schema<Challenge>({
+export const challengeSchema = new Schema<ChallengeInterface>({
     uuid: { type: String, required: true },
     name: { type: String, required: true },
     modificationDate: { type: String, required: true },

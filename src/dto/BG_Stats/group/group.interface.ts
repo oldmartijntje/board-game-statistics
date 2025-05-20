@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 // imma just ignore these xD
-export interface Group {
+export interface GroupInterface {
     uuid: string;
     id: number;
     name: string;
@@ -11,7 +11,7 @@ export interface Group {
     metaData?: string;
 }
 
-export const groupSchema = new Schema<Group>({
+export const groupSchema = new Schema<GroupInterface>({
     uuid: { type: String, required: true },
     id: { type: Number, required: true },
     name: { type: String, required: true },

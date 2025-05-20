@@ -1,13 +1,13 @@
 import { Schema } from "mongoose";
 import * as mongodb from "mongodb";
 
-export interface PlayerTag {
+export interface PlayerTagInterface {
     tagRefId: number;
     metaData?: string;
     _tagRefId: mongodb.ObjectId;
 }
 
-export interface Player {
+export interface PlayerInterface {
     _id?: mongodb.ObjectId;
     uuid: string;
     id: number;
@@ -16,10 +16,10 @@ export interface Player {
     modificationDate: string;
     bggUsername?: string;
     metaData?: string;
-    tags?: PlayerTag[];
+    tags?: PlayerTagInterface[];
 }
 
-export const playerSchema = new Schema<Player>({
+export const playerSchema = new Schema<PlayerInterface>({
     uuid: { type: String, required: true },
     id: { type: Number, required: true },
     name: { type: String, required: true },

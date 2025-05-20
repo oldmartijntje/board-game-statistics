@@ -1,7 +1,7 @@
 import * as mongodb from "mongodb";
 import { Schema } from "mongoose";
 
-export interface Tag {
+export interface TagInterface {
     _id?: mongodb.ObjectId;
     uuid: string;
     id: number;
@@ -15,7 +15,7 @@ export interface Tag {
     metaData?: string;
 }
 
-export const tagSchema = new Schema<Tag>({
+export const tagSchema = new Schema<TagInterface>({
     uuid: { type: String, required: true },
     id: { type: Number, required: true },
     name: { type: String, required: true },

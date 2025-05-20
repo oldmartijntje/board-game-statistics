@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 import * as mongodb from "mongodb";
 
-export interface GameCopy {
+export interface GameCopyInterface {
     uuid?: string;
     modificationDate?: string;
     metaData?: string;
@@ -24,13 +24,13 @@ export interface GameCopy {
     gameName?: string;
 }
 
-export interface GameTag {
+export interface GameTagInterface {
     tagRefId: number;
     _tagRefId: mongodb.ObjectId;
     metaData?: string;
 }
 
-export interface Game {
+export interface GameInterface {
     uuid: string;
     id: number;
     _id?: mongodb.ObjectId;
@@ -57,11 +57,11 @@ export interface Game {
     minAge: number;
     preferredImage: number;
     previouslyPlayedAmount: number;
-    copies: GameCopy[];
-    tags?: GameTag[];
+    copies: GameCopyInterface[];
+    tags?: GameTagInterface[];
 }
 
-export const gameSchema = new Schema<Game>({
+export const gameSchema = new Schema<GameInterface>({
     uuid: { type: String, required: true },
     id: { type: Number, required: true },
     name: { type: String, required: true },
