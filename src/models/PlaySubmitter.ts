@@ -45,26 +45,15 @@ export class PlaySubmitter {
         count += this.countItems(item.challenges);
         count += this.countItems(item.deletedObjects);
         count += item.deletedObjects != undefined ? 1 : 0
-        const queueItemInterface: QueueItemInterface = {
-            _userId: user._id,
-            progress: {
-                hasStarted: false,
-                completed: 0,
-                estimatedTodo: count,
-                errors: []
-            },
-            players: item.players,
-            locations: item.locations,
-            games: item.games,
-            plays: item.plays,
-            userInfo: item.userInfo,
-            tags: item.tags,
-            groups: item.groups,
-            challenges: item.challenges,
-            deletedObjects: item.deletedObjects
+        item._userId = user._id
+        item.progress = {
+            hasStarted: false,
+            completedItems: 0,
+            estimatedTodo: count,
+            errors: []
         }
         try {
-            const newQueueItem = await queueItems.create(queueItemInterface);
+            const newQueueItem = await queueItems.create(item);
             if (!newQueueItem) {
                 throw new Error('Failed to create queue item: returned null or undefined');
             }

@@ -4,7 +4,7 @@ import { parentPort, workerData } from 'worker_threads';
 import { WorkerEnum } from './WorkerEnum';
 import { PlaySubmitter } from '../models/PlaySubmitter';
 import { QueueItemInterface } from '../../src/dto/queueItem/queueItem.interface';
-import { DataExtractor } from '../models/DataExtractor.js';
+import { DataExtractor } from '../models/DataExtractor';
 
 
 const { MONGO_URI } = process.env;

@@ -116,6 +116,11 @@ export class DataExtractor {
      */
     private async ConflictHandler(): Promise<ReturnValueInterface> {
         if (this.CheckActivity().error) return this.CheckActivity();
+        this.loadedItem.players.forEach(element => {
+
+        });
+
+
 
         return {
             error: false,
