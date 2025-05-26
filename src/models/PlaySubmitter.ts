@@ -44,7 +44,7 @@ export class PlaySubmitter {
         count += this.countItems(item.groups);
         count += this.countItems(item.challenges);
         count += this.countItems(item.deletedObjects);
-        count += item.deletedObjects != undefined ? 1 : 0
+        count += item.userInfo != undefined ? 1 : 0
         item._userId = user._id
         item.progress = {
             hasStarted: false,
