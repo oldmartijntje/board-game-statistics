@@ -1,0 +1,101 @@
+{
+    "about": "This is a Play file that can be read by Board Game Stats. If you see this text, try to use a share, export or open-in function to open it with Board Game Stats.",
+    "players": [
+        {
+            "uuid": "...",
+            "id": 1,
+            "name": "Dad",
+            "isAnonymous": false,
+            "modificationDate": "2024-05-31 21:17:20",
+            "metaData": "{\"isNpc\":0}"
+        },
+        {
+            "uuid": "...",
+            "id": 3,
+            "name": "Me",
+            "isAnonymous": false,
+            "modificationDate": "2024-05-31 21:17:20",
+            "metaData": "{\"isNpc\":0}"
+        }
+    ],
+    "locations": [
+        {
+            "uuid": "...",
+            "id": 2,
+            "name": "Home",
+            "modificationDate": "2022-11-25 22:46:07"
+        }
+    ],
+    "games": [
+        {
+            "uuid": "...",
+            "id": 245,
+            "name": "Star Wars: Bounty Hunters",
+            "modificationDate": "2024-12-10 06:51:03",
+            "cooperative": false,
+            "highestWins": true,
+            "noPoints": false,
+            "usesTeams": false,
+            "urlThumb": "https://cf.geekdo-images.com/bfPo-GAs3pVmTc8HPHRVQA__thumb/img/O6cAZgaZI-4TZfoYjKynSw6HFtE=/fit-in/200x150/filters:strip_icc()/pic7949042.jpg",
+            "urlImage": "https://cf.geekdo-images.com/bfPo-GAs3pVmTc8HPHRVQA__original/img/yqyb08qY8sENtOxVlFmVkn3ma_c=/0x0/filters:format(jpeg)/pic7949042.jpg",
+            "bggName": "Star Wars: Bounty Hunters",
+            "bggYear": 2024,
+            "bggId": 410655,
+            "designers": "Frédéric Henry",
+            "isBaseGame": 1,
+            "isExpansion": 0,
+            "rating": 68,
+            "minPlayerCount": 2,
+            "maxPlayerCount": 6,
+            "minPlayTime": 20,
+            "maxPlayTime": 20,
+            "minAge": 10
+        }
+    ],
+    "plays": [
+        {
+            "uuid": "...",
+            "modificationDate": "2025-05-16 22:20:53",
+            "entryDate": "2025-05-16 22:17:51",
+            "playDate": "2025-05-16 22:17:51",
+            "usesTeams": false,
+            "durationMin": 18,
+            "ignored": false,
+            "manualWinner": false,
+            "rounds": 0,
+            "scoresheet": "{\"bggId\":410655,\"version\":1,\"langCode\":\"en\",\"variantId\":\"starwarsbountyhunters\",\"variantLabel\":\"Star Wars: Bounty Hunters\",\"scoreType\":\"bestTotalWins\",\"groups\":[{\"templateId\":\"1\",\"maxRepeat\":-1,\"repetition\":1,\"hasSubTotal\":false,\"hideSingleGroupLabel\":false,\"isExtra\":false,\"rows\":[{\"templateId\":\"targets\",\"label\":\"Targets\",\"repetition\":1,\"repeatable\":false,\"negative\":false,\"isExtra\":false,\"scores\":{\"247555b2-9535-47b1-ad5b-f97309ccf157\":\"44\",\"e811c7f4-720e-4634-b9f9-a2114381ffdc\":\"58\"}},{\"templateId\":\"cratecards\",\"label\":\"Crate cards\",\"repetition\":1,\"repeatable\":false,\"negative\":false,\"isExtra\":false,\"scores\":{\"247555b2-9535-47b1-ad5b-f97309ccf157\":\"8\",\"e811c7f4-720e-4634-b9f9-a2114381ffdc\":\"4\"}},{\"templateId\":\"contracts\",\"label\":\"Contracts\",\"repetition\":1,\"repeatable\":false,\"negative\":false,\"isExtra\":false,\"scores\":{\"247555b2-9535-47b1-ad5b-f97309ccf157\":\"4\",\"e811c7f4-720e-4634-b9f9-a2114381ffdc\":\"2\"}},{\"templateId\":\"bountyhunters\",\"label\":\"Bounty Hunters\",\"repetition\":1,\"repeatable\":false,\"negative\":true,\"isExtra\":false,\"scores\":{\"247555b2-9535-47b1-ad5b-f97309ccf157\":\"23\",\"e811c7f4-720e-4634-b9f9-a2114381ffdc\":\"24\"}}]}]}",
+            "locationRefId": 2,
+            "gameRefId": 245,
+            "board": "",
+            "scoringSetting": 0,
+            "metaData": "{\"playerRefId\":1,\"playGameBggVersion\":\"{\\\"versionId\\\":0,\\\"gameName\\\":\\\"Star Wars: Bounty Hunters\\\",\\\"yearPublished\\\":0}\",\"playUsedGameCopy\":2}",
+            "playerScores": [
+                {
+                    "score": "33",
+                    "winner": false,
+                    "newPlayer": false,
+                    "startPlayer": false,
+                    "playerRefId": 1,
+                    "role": "",
+                    "rank": 2,
+                    "seatOrder": 0,
+                    "metaData": "{\"scoreUuid\":\"247555b2-9535-47b1-ad5b-f97309ccf157\"}"
+                },
+                {
+                    "score": "40",
+                    "winner": true,
+                    "newPlayer": false,
+                    "startPlayer": false,
+                    "playerRefId": 3,
+                    "rank": 1,
+                    "seatOrder": 0,
+                    "metaData": "{\"scoreUuid\":\"e811c7f4-720e-4634-b9f9-a2114381ffdc\"}"
+                }
+            ],
+            "expansionPlays": []
+        }
+    ],
+    "userInfo": {
+        "meRefId": 1
+    }
+}
