@@ -1,7 +1,8 @@
-import { QueueItemInterface } from "../dto/queueItem/queueItem.interface.js";
-import { QueueItemProgression } from "../dto/queueItem/queueItemProgression.interface.js";
-import { ReturnValueInterface } from "../dto/returnValue/returnValue.interface.js";
-import { queueItems } from '../../src/mainDatabase';
+import { QueueItemInterface } from "../dto/queueItem/queueItem.interface";
+import { QueueItemProgression } from "../dto/queueItem/queueItemProgression.interface";
+import { ReturnValueInterface } from "../dto/returnValue/returnValue.interface";
+import { playerTable, queueItems } from '../../src/mainDatabase';
+import { ModelRedesigner } from "./ModelRedesigner";
 
 enum processSelector {
     players,
@@ -95,7 +96,8 @@ export class DataExtractor {
      */
     public async HandleNext(): Promise<ReturnValueInterface> {
         if (this.CheckActivity().error) return this.CheckActivity();
-
+        // make sure to create a new id whenever an Id is smaller than 0
+        // this is important
 
     }
 
@@ -116,11 +118,10 @@ export class DataExtractor {
      */
     private async ConflictHandler(): Promise<ReturnValueInterface> {
         if (this.CheckActivity().error) return this.CheckActivity();
-        this.loadedItem.players.forEach(element => {
-
-        });
-
-
+        const redesigner = new ModelRedesigner();
+        this.loadedItem.players = await redesigner.PlayerRedesigner(this.loadedItem.players)
+        this.loadedItem.games = await redesigner.GameRedesigner(this.loadedItem.games)
+        console.log(this.loadedItem)
 
         return {
             error: false,
