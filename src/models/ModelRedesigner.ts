@@ -4,7 +4,7 @@ import { PlayerInterface } from "../dto/BG_Stats/player/player.interface";
 import { TagInterface } from "../dto/BG_Stats/tags/tags.interface";
 import { gameTable, locationTable, playerTable, tagTable } from "../mainDatabase";
 
-class changedIdentifiers {
+interface changedIdentifiers {
     originalId: number;
     newId: number;
 }
