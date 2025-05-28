@@ -119,8 +119,12 @@ export class DataExtractor {
     private async ConflictHandler(): Promise<ReturnValueInterface> {
         if (this.CheckActivity().error) return this.CheckActivity();
         const redesigner = new ModelRedesigner();
+        if (this.loadedItem.tags != undefined) {
+            this.loadedItem.tags = await redesigner.TagsRedesigner(this.loadedItem.tags)
+        }
         this.loadedItem.players = await redesigner.PlayerRedesigner(this.loadedItem.players)
         this.loadedItem.games = await redesigner.GameRedesigner(this.loadedItem.games)
+        this.loadedItem.locations = await redesigner.LocationRedesigner(this.loadedItem.locations)
         console.log(this.loadedItem)
 
         return {
