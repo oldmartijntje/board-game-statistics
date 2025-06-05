@@ -1,0 +1,100 @@
+{
+  "about": "This is a Play file that can be read by Board Game Stats. If you see this text, try to use a share, export or open-in function to open it with Board Game Stats.",
+  "players": [
+    {
+      "uuid": "00000000-0000-0000-0000-000000000011",
+      "id": 1,
+      "name": "Player X",
+      "isAnonymous": true,
+      "modificationDate": "2025-06-01 18:42:00",
+      "metaData": "{\"isNpc\":0}"
+    },
+    {
+      "uuid": "00000000-0000-0000-0000-000000000012",
+      "id": 2,
+      "name": "Player Y",
+      "isAnonymous": true,
+      "modificationDate": "2025-06-01 18:42:00",
+      "metaData": "{\"isNpc\":0}"
+    }
+  ],
+  "locations": [
+    {
+      "uuid": "00000000-0000-0000-0000-000000000020",
+      "id": 1,
+      "name": "Test Location B",
+      "modificationDate": "2025-06-01 18:45:00"
+    }
+  ],
+  "games": [
+    {
+      "uuid": "00000000-0000-0000-0000-000000000200",
+      "id": 1,
+      "name": "Star Wars: Bounty Hunters",
+      "modificationDate": "2024-12-10 06:51:03",
+      "cooperative": false,
+      "highestWins": true,
+      "noPoints": false,
+      "usesTeams": false,
+      "urlThumb": "",
+      "urlImage": "",
+      "bggName": "Star Wars: Bounty Hunters",
+      "bggYear": 2024,
+      "bggId": 410655,
+      "designers": "Frédéric Henry",
+      "isBaseGame": 1,
+      "isExpansion": 0,
+      "rating": 68,
+      "minPlayerCount": 2,
+      "maxPlayerCount": 6,
+      "minPlayTime": 20,
+      "maxPlayTime": 20,
+      "minAge": 10
+    }
+  ],
+  "plays": [
+    {
+      "uuid": "00000000-0000-0000-0000-000000002000",
+      "modificationDate": "2025-06-04 20:10:00",
+      "entryDate": "2025-06-04 20:00:00",
+      "playDate": "2025-06-04 19:55:00",
+      "usesTeams": false,
+      "durationMin": 22,
+      "ignored": false,
+      "manualWinner": false,
+      "rounds": 0,
+      "scoresheet": "{\"bggId\":410655,\"version\":1,\"langCode\":\"en\",\"variantId\":\"starwarsbountyhunters\",\"variantLabel\":\"Star Wars: Bounty Hunters\",\"scoreType\":\"bestTotalWins\",\"groups\":[{\"templateId\":\"1\",\"maxRepeat\":-1,\"repetition\":1,\"hasSubTotal\":false,\"hideSingleGroupLabel\":false,\"isExtra\":false,\"rows\":[{\"templateId\":\"targets\",\"label\":\"Targets\",\"repetition\":1,\"repeatable\":false,\"negative\":false,\"isExtra\":false,\"scores\":{\"00000000-0000-0000-0000-000000000011\":\"51\",\"00000000-0000-0000-0000-000000000012\":\"62\"}},{\"templateId\":\"cratecards\",\"label\":\"Crate cards\",\"repetition\":1,\"repeatable\":false,\"negative\":false,\"isExtra\":false,\"scores\":{\"00000000-0000-0000-0000-000000000011\":\"3\",\"00000000-0000-0000-0000-000000000012\":\"0\"}},{\"templateId\":\"contracts\",\"label\":\"Contracts\",\"repetition\":1,\"repeatable\":false,\"negative\":false,\"isExtra\":false,\"scores\":{\"00000000-0000-0000-0000-000000000011\":\"7\",\"00000000-0000-0000-0000-000000000012\":\"11\"}},{\"templateId\":\"bountyhunters\",\"label\":\"Bounty Hunters\",\"repetition\":1,\"repeatable\":false,\"negative\":true,\"isExtra\":false,\"scores\":{\"00000000-0000-0000-0000-000000000011\":\"24\",\"00000000-0000-0000-0000-000000000012\":\"33\"}}]}]}",
+      "locationRefId": 1,
+      "gameRefId": 1,
+      "board": "",
+      "scoringSetting": 0,
+      "metaData": "{\"playerRefId\":2}",
+      "playerScores": [
+        {
+          "score": "31",
+          "winner": false,
+          "newPlayer": false,
+          "startPlayer": true,
+          "playerRefId": 1,
+          "rank": 2,
+          "seatOrder": 1,
+          "metaData": "{\"scoreUuid\":\"00000000-0000-0000-0000-000000000011\"}"
+        },
+        {
+          "score": "40",
+          "winner": true,
+          "newPlayer": false,
+          "startPlayer": false,
+          "playerRefId": 2,
+          "rank": 1,
+          "seatOrder": 2,
+          "metaData": "{\"scoreUuid\":\"00000000-0000-0000-0000-000000000012\"}"
+        }
+      ],
+      "expansionPlays": []
+    }
+  ],
+  "userInfo": {
+    "meRefId": 2
+  }
+}
