@@ -10,6 +10,7 @@ export interface UserInfoInterface {
     appVersion: string;
     systemVersion: string;
     device: string;
+    selectedUserInfoEntree?: boolean;
 }
 
 export const userInfoSchema = new Schema<UserInfoInterface>({
@@ -18,5 +19,6 @@ export const userInfoSchema = new Schema<UserInfoInterface>({
     exportDate: { type: String, required: true },
     appVersion: { type: String, required: true },
     systemVersion: { type: String, required: true },
-    device: { type: String, required: true }
+    device: { type: String, required: true },
+    selectedUserInfoEntree: { type: Boolean, required: true }
 });

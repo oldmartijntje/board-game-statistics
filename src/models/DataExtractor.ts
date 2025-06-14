@@ -21,6 +21,7 @@ export class DataExtractor {
     loadedItem: QueueItemInterface;
     selectedProcess: processSelector;
     active: boolean = true;
+
     constructor(queueItemInterface: QueueItemInterface) {
         this.loadedItem = queueItemInterface;
     }
@@ -108,7 +109,13 @@ export class DataExtractor {
         if (this.CheckActivity().error) return this.CheckActivity();
         this.active = false;
 
-
+        await queueItems.replaceOne({ _id: this.loadedItem._id }, this.loadedItem);
+        return {
+            error: false,
+            message: "Saved Item",
+            statusCode: 200,
+            data: { continue: true, date: new Date(Date.now()) }
+        }
     }
 
     /**
@@ -126,16 +133,8 @@ export class DataExtractor {
         this.loadedItem.locations = await redesigner.LocationRedesigner(this.loadedItem.locations)
         this.loadedItem.challenges = await redesigner.ChallengeRedesigner(this.loadedItem.challenges)
         this.loadedItem.groups = await redesigner.GroupRedesigner(this.loadedItem.groups)
-        this.loadedItem.deletedObjects = this.loadedItem.deletedObjects // yes this is dumb, but a temp visualisation for me that i have done everyting
-        // this.loadedItem.plays = await redesigner.PlayRedesigner(this.loadedItem.plays)
-        // this.loadedItem.userInfo = await redesigner.UserInfoRedesigner(this.loadedItem.userInfo)
-        console.log(this.loadedItem)
-
-        return {
-            error: false,
-            message: "First time handling this data.",
-            statusCode: 200,
-            data: { continue: false, date: new Date(Date.now()) }
-        };
+        this.loadedItem.plays = await redesigner.PlayRedesigner(this.loadedItem.plays)
+        this.loadedItem.userInfo = await redesigner.UserInfoRedesigner(this.loadedItem.userInfo)
+        return await this.SubmitChanges();
     }
 }

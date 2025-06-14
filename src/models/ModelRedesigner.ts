@@ -2,15 +2,16 @@ import { GameInterface } from "../dto/BG_Stats/game/game.interface";
 import { LocationInterface } from "../dto/BG_Stats/location/location.interface";
 import { PlayerInterface } from "../dto/BG_Stats/player/player.interface";
 import { TagInterface } from "../dto/BG_Stats/tags/tags.interface";
-import {gameTable, locationTable, playerTable, tagTable, challengeTable, groupTable} from "../mainDatabase";
+import {gameTable, locationTable, playerTable, tagTable, challengeTable, groupTable, playTable} from "../mainDatabase";
 import {ChallengeInterface} from "../dto/BG_Stats/challenges/challenges.interface";
 import { v4 as uuidv4 } from 'uuid';
 import {GroupInterface} from "../dto/BG_Stats/group/group.interface";
+import {PlayInterface} from "../dto/BG_Stats/plays/plays.interface";
+import {UserInfoInterface} from "../dto/BG_Stats/userInfo/userInfo.interface";
 
 interface changedIdentifiers {
     originalId: number;
     newId: number;
-    subscribes: boolean;
 }
 
 interface EntityWithIdUuid {
@@ -41,14 +42,7 @@ export class ModelRedesigner {
             item.tags?.forEach(tag => {
                 const newId = tagIdMap.get(tag.tagRefId);
                 if (newId !== undefined) {
-                    const originalId = tag.tagRefId;
                     tag.tagRefId = newId;
-
-                    // this way we later on only need to check for mongoDB ID's if it was true, or it didn't have a tagrename in the first place
-                    const change = renamedList.find(r => r.originalId === originalId && r.newId === newId);
-                    if (change) {
-                        change.subscribes = true;
-                    }
                 }
             });
         });
@@ -96,7 +90,7 @@ export class ModelRedesigner {
                 // UUID mismatch: ID conflict, make new ID by negating the existing one
                 const originalId = item.id;
                 item.id *= -1;
-                renamedList.push({ originalId, newId: item.id, subscribes: false });
+                renamedList.push({ originalId, newId: item.id });
                 result.push(item);
             } else {
                 // UUID match: exact duplicate, reuse as-is
@@ -213,5 +207,89 @@ export class ModelRedesigner {
         }
         return result;
     }
+
+    /**
+     * Redesigns plays by checking for a lot of conflicts.
+     * @param plays
+     * @constructor
+     */
+    public async PlayRedesigner(plays: PlayInterface[]): Promise<PlayInterface[]> {
+        const playerMap = new Map<number, number>(this.renamedPlayers.map(r => [r.originalId, r.newId]));
+        const gameMap = new Map<number, number>(this.renamedGames.map(r => [r.originalId, r.newId]));
+        const locMap = new Map<number, number>(this.renamedLocations.map(r => [r.originalId, r.newId]));
+
+        // update any renamed references on incoming plays
+        plays.forEach(play => {
+            if (gameMap.has(play.gameRefId)) {
+                play.gameRefId = gameMap.get(play.gameRefId)!;
+            }
+            if (play.locationRefId != null && locMap.has(play.locationRefId)) {
+                play.locationRefId = locMap.get(play.locationRefId)!;
+            }
+            play.playerScores.forEach(ps => {
+                if (playerMap.has(ps.playerRefId)) {
+                    ps.playerRefId = playerMap.get(ps.playerRefId)!;
+                }
+            });
+        });
+
+        // 3) fetch existing by UUID
+        const uuids = plays.map(p => p.uuid);
+        const existing: PlayInterface[] = await playTable
+            .find({ uuid: { $in: uuids } })
+            .lean()
+            .exec();
+
+        // helper to fingerprint a play for comparison
+        const fingerprint = (p: PlayInterface) => {
+            const playerIds = p.playerScores.map(ps => ps.playerRefId).join(',');
+            return [
+                p.playDate,
+                p.bggId,
+                p.gameRefId,
+                p.playerScores.length,
+                playerIds
+            ].join('|');
+        };
+        const existingByUuid = new Map<string, PlayInterface>();
+        existing.forEach(e => existingByUuid.set(e.uuid, e));
+
+        // decide whether to keep or regen uuid
+        return plays.map(play => {
+            const existingPlay = existingByUuid.get(play.uuid);
+            if (!existingPlay) {
+                // no existing, keep as-is
+                return play;
+            }
+
+            // compare fingerprints
+            if (fingerprint(existingPlay) === fingerprint(play)) {
+                // exactly the same, reuse uuid
+                return play;
+            } else {
+                // has changed; generate a fresh uuid
+                play.uuid = uuidv4();
+                return play;
+            }
+        });
+    }
+
+    /**
+     * Redesigns a single UserInfo.
+     */
+    public async UserInfoRedesigner(info: UserInfoInterface): Promise<UserInfoInterface> {
+        const playerMap = new Map<number, number>(
+            this.renamedPlayers.map(r => [r.originalId, r.newId])
+        );
+
+        // If this meRefId was renamed, swap it in
+        const newId = playerMap.get(info.meRefId);
+        if (newId !== undefined) {
+            info.meRefId = newId;
+        }
+        info.selectedUserInfoEntree = false;
+        return info;
+    }
+
 
 }
