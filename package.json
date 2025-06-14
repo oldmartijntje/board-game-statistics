@@ -20,6 +20,7 @@
         "inquirer": "^8.2.6",
         "mongodb": "^6.3.0",
         "mongoose": "^8.1.2",
+        "uuid": "^11.1.0",
         "worker-thread": "^1.1.0"
     },
     "devDependencies": {

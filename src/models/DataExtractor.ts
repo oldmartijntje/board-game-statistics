@@ -125,6 +125,11 @@ export class DataExtractor {
         this.loadedItem.players = await redesigner.PlayerRedesigner(this.loadedItem.players)
         this.loadedItem.games = await redesigner.GameRedesigner(this.loadedItem.games)
         this.loadedItem.locations = await redesigner.LocationRedesigner(this.loadedItem.locations)
+        this.loadedItem.challenges = await redesigner.ChallengeRedesigner(this.loadedItem.challenges)
+        this.loadedItem.groups = await redesigner.GroupRedesigner(this.loadedItem.groups)
+        this.loadedItem.deletedObjects = this.loadedItem.deletedObjects // yes this is dumb, but a temp visualisation for me that i have done everyting
+        // this.loadedItem.plays = await redesigner.PlayRedesigner(this.loadedItem.plays)
+        // this.loadedItem.userInfo = await redesigner.UserInfoRedesigner(this.loadedItem.userInfo)
         console.log(this.loadedItem)
 
         return {

@@ -2,8 +2,10 @@ import { GameInterface } from "../dto/BG_Stats/game/game.interface";
 import { LocationInterface } from "../dto/BG_Stats/location/location.interface";
 import { PlayerInterface } from "../dto/BG_Stats/player/player.interface";
 import { TagInterface } from "../dto/BG_Stats/tags/tags.interface";
-import { gameTable, locationTable, playerTable, tagTable } from "../mainDatabase";
+import {gameTable, locationTable, playerTable, tagTable, challengeTable, groupTable} from "../mainDatabase";
 import {ChallengeInterface} from "../dto/BG_Stats/challenges/challenges.interface";
+import { v4 as uuidv4 } from 'uuid';
+import {GroupInterface} from "../dto/BG_Stats/group/group.interface";
 
 interface changedIdentifiers {
     originalId: number;
@@ -158,8 +160,49 @@ export class ModelRedesigner {
         );
     }
 
+    /**
+     * Redesigns the groups, checking for existing UUID matches.
+     */
+    public GroupRedesigner(groups: GroupInterface[]): Promise<GroupInterface[]> {
+        return this.redesignEntities(
+            groups,
+            groupTable,
+            this.renamedTags
+        );
+    }
 
-    // public ChallengeRedesigner(challenge: ChallengeInterface): Promise<ChallengeInterface[]> {
-    //
-    // }
+    /**
+     * Redesigns challenges by checking for UUID and name conflicts.
+     * If UUID exists and name is unchanged, keep the existing UUID.
+     * If UUID exists but name has changed, generate a new UUID.
+     */
+    public async ChallengeRedesigner(challenges: ChallengeInterface[]): Promise<ChallengeInterface[]> {
+        const uuids = challenges.map(c => c.uuid);
+
+        const existingChallenges = await challengeTable.find({ uuid: { $in: uuids } }).lean().exec();
+        const existingByUuid = new Map<string, ChallengeInterface>(
+            existingChallenges.map((c: ChallengeInterface) => [c.uuid, c])
+        );
+
+        const result: ChallengeInterface[] = [];
+
+        for (const challenge of challenges) {
+            const existing = existingByUuid.get(challenge.uuid);
+
+            if (!existing) {
+                // No UUID conflict, safe to insert
+                result.push(challenge);
+            } else if (existing.name === challenge.name) {
+                // UUID exists and name matches — treat as same
+                result.push(challenge);
+            } else {
+                // UUID exists but name differs — regenerate UUID
+                // in theory I should recheck the uuid here for accidental doubles. but this is practiccally impossible, so nahh.
+                challenge.uuid = uuidv4();
+                result.push(challenge);
+            }
+        }
+        return result;
+    }
+
 }
