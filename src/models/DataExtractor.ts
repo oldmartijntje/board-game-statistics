@@ -56,8 +56,7 @@ export class DataExtractor {
         let progress: QueueItemProgression = this.loadedItem.progress;
         if (!progress.hasStarted) {
             progress.hasStarted = true;
-            let response: ReturnValueInterface = await this.ConflictHandler();
-            return response;
+            return await this.ConflictHandler();
         }
 
         if (this.loadedItem.players.length > 0) {
