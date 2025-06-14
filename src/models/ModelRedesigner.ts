@@ -10,6 +10,7 @@ import {GroupInterface} from "../dto/BG_Stats/group/group.interface";
 interface changedIdentifiers {
     originalId: number;
     newId: number;
+    subscribes: boolean;
 }
 
 interface EntityWithIdUuid {
@@ -33,17 +34,26 @@ export class ModelRedesigner {
      */
     private updateTagRefs(
         items: { tags?: { tagRefId: number }[] }[],
-        tagIdMap: ChangedIdentifiersMap
+        tagIdMap: ChangedIdentifiersMap,
+        renamedList: changedIdentifiers[]
     ) {
         items.forEach(item => {
             item.tags?.forEach(tag => {
                 const newId = tagIdMap.get(tag.tagRefId);
                 if (newId !== undefined) {
+                    const originalId = tag.tagRefId;
                     tag.tagRefId = newId;
+
+                    // this way we later on only need to check for mongoDB ID's if it was true, or it didn't have a tagrename in the first place
+                    const change = renamedList.find(r => r.originalId === originalId && r.newId === newId);
+                    if (change) {
+                        change.subscribes = true;
+                    }
                 }
             });
         });
     }
+
 
     /**
      * Generic method to process and redesign any type of entity based on ID/UUID.
@@ -65,8 +75,7 @@ export class ModelRedesigner {
         getIdKey = (x: T) => x.id,
         getUuidKey = (x: T) => x.uuid
     ): Promise<T[]> {
-        // Update tag references if needed
-        if (tagMap) this.updateTagRefs(items, tagMap);
+        if (tagMap) this.updateTagRefs(items, tagMap, renamedList);
 
         // Fetch existing entries from the DB by their IDs
         const incomingIds = items.map(getIdKey);
@@ -87,7 +96,7 @@ export class ModelRedesigner {
                 // UUID mismatch: ID conflict, make new ID by negating the existing one
                 const originalId = item.id;
                 item.id *= -1;
-                renamedList.push({ originalId, newId: item.id });
+                renamedList.push({ originalId, newId: item.id, subscribes: false });
                 result.push(item);
             } else {
                 // UUID match: exact duplicate, reuse as-is
