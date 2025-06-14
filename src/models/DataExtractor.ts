@@ -3,6 +3,7 @@ import { QueueItemProgression } from "../dto/queueItem/queueItemProgression.inte
 import { ReturnValueInterface } from "../dto/returnValue/returnValue.interface";
 import { playerTable, queueItems } from '../../src/mainDatabase';
 import { ModelRedesigner } from "./ModelRedesigner";
+import {Logger} from "./Logger";
 
 enum processSelector {
     players,
@@ -21,6 +22,7 @@ export class DataExtractor {
     loadedItem: QueueItemInterface;
     selectedProcess: processSelector;
     active: boolean = true;
+    private logger = new Logger<DataExtractor>(this);
 
     constructor(queueItemInterface: QueueItemInterface) {
         this.loadedItem = queueItemInterface;
@@ -110,6 +112,7 @@ export class DataExtractor {
         this.active = false;
 
         await queueItems.replaceOne({ _id: this.loadedItem._id }, this.loadedItem);
+        this.logger.StringifyObject(this.loadedItem._id).PrependText("Submitted Changes to queueItem WHERE _id == ").LogInfo();
         return {
             error: false,
             message: "Saved Item",
@@ -124,6 +127,7 @@ export class DataExtractor {
      */
     private async ConflictHandler(): Promise<ReturnValueInterface> {
         if (this.CheckActivity().error) return this.CheckActivity();
+        this.logger.StringifyObject(this.loadedItem._id).PrependText("Started Conflicthandler on queueItem WHERE _id == ").LogInfo();
         const redesigner = new ModelRedesigner();
         if (this.loadedItem.tags != undefined) {
             this.loadedItem.tags = await redesigner.TagsRedesigner(this.loadedItem.tags)
@@ -135,6 +139,7 @@ export class DataExtractor {
         this.loadedItem.groups = await redesigner.GroupRedesigner(this.loadedItem.groups)
         this.loadedItem.plays = await redesigner.PlayRedesigner(this.loadedItem.plays)
         this.loadedItem.userInfo = await redesigner.UserInfoRedesigner(this.loadedItem.userInfo)
+        this.logger.LogInfo("Finished Conflicthandler");
         return await this.SubmitChanges();
     }
 }

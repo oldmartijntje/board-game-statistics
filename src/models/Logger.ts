@@ -1,6 +1,12 @@
+export enum LogLevel {
+    Info = 0,
+    Warning = 1,
+    Error = 2
+}
+
 class LogObject<T> {
-    logger: Logger<T>
-    stringified: string
+    private readonly logger: Logger<T>;
+    public stringified: string;
 
     constructor(logger: Logger<T>, stringified: string) {
         this.logger = logger;
@@ -18,41 +24,68 @@ class LogObject<T> {
     public LogInfo() {
         this.logger.LogInfo(this.stringified);
     }
+
+    public PrependText(text: string): LogObject<T> {
+        this.stringified = text + this.stringified;
+        return this;
+    }
+
+    public AppendText(text: string): LogObject<T> {
+        this.stringified = text + this.stringified;
+        return this;
+    }
 }
 
-
 export class Logger<T> {
+    private readonly context: string;
+
+    constructor(context: T) {
+        this.context = context.constructor.name
+    }
+
     public StringifyObject(obj: any): LogObject<T> {
-        return new LogObject<T>(this, JSON.stringify(obj))
+        return new LogObject(this, JSON.stringify(obj));
     }
 
-    private FormatLevelForConsole(message: string, level: number) {
+    private FormatMessage(message: string): string {
+        return `[${new Date().toISOString()}] [${this.context}] ${message}`;
+    }
+
+    private LogMessage(message: string, level: LogLevel) {
+        const formatted = this.FormatMessage(message);
+
         switch (level) {
-            case 0:
-                console.log(`[LOG] ${message}`);
-                return;
-            case 1:
-                console.warn(`[WARNING] ${message}`);
-                return;
-            case 3:
-                console.error(`[ERROR] ${message}`);
-                return;
+            case LogLevel.Info:
+                console.log(`[INFO] ${formatted}`);
+                break;
+            case LogLevel.Warning:
+                console.warn(`[WARNING] ${formatted}`);
+                break;
+            case LogLevel.Error:
+                console.error(`[ERROR] ${formatted}`);
+                break;
         }
+
+        // const logEntry = `${LogLevel[level]}: ${formatted}\n`
+        // import fs from 'fs/promises';
+
+        // try {
+        //   await fs.appendFile('app.log', logEntry)
+        // } catch (fileError) {
+        //   console.error('Failed to write to log file:', fileError);
+        // }
+
     }
 
-    private LogMessage(message: string, level?: number) {
-
+    public LogInfo(message: string) {
+        this.LogMessage(message, LogLevel.Info);
     }
 
-    public LogInfo(message:string) {
-        this.LogMessage(message, 0)
+    public LogWarning(message: string) {
+        this.LogMessage(message, LogLevel.Warning);
     }
 
-    public LogWarning(message:string) {
-        this.LogMessage(message, 1)
-    }
-
-    public LogError(message:string) {
-        this.LogMessage(message, 3)
+    public LogError(message: string) {
+        this.LogMessage(message, LogLevel.Error);
     }
 }
