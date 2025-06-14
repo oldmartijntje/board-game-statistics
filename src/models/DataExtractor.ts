@@ -26,6 +26,8 @@ export class DataExtractor {
 
     constructor(queueItemInterface: QueueItemInterface) {
         this.loadedItem = queueItemInterface;
+        this.logger.LogInfo("Startup DataExtractor");
+
     }
 
     /**
@@ -55,6 +57,7 @@ export class DataExtractor {
      */
     public async CheckAllDicts(): Promise<ReturnValueInterface> {
         if (this.CheckActivity().error) return this.CheckActivity();
+        this.logger.StringifyObject(this.loadedItem._id).PrependText("Started CheckAllDicts() on queueItem WHERE _id == ").LogInfo();
 
         let progress: QueueItemProgression = this.loadedItem.progress;
         if (!progress.hasStarted) {

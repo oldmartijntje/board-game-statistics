@@ -13,16 +13,19 @@ class LogObject<T> {
         this.stringified = stringified;
     }
 
-    public LogError() {
+    public LogError(): LogObject<T> {
         this.logger.LogError(this.stringified);
+        return this;
     }
 
-    public LogWarning() {
+    public LogWarning(): LogObject<T> {
         this.logger.LogWarning(this.stringified);
+        return this;
     }
 
-    public LogInfo() {
+    public LogInfo(): LogObject<T> {
         this.logger.LogInfo(this.stringified);
+        return this;
     }
 
     public PrependText(text: string): LogObject<T> {
