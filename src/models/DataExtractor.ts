@@ -108,13 +108,7 @@ export class DataExtractor {
         }
     }
 
-    /**
-     * 
-     * @returns Whether it succeeded or not
-     */
-    public async HandleNext(tryAmount: number = 1): Promise<ReturnValueInterface> {
-        if (this.CheckActivity().error) return this.CheckActivity();
-
+    public GetProcessPropertyAccessor(selector: processSelector): ((item: LoadedItem) => any) | undefined {
         const processPropertyAccessors: {
             [key in processSelector]?: (item: LoadedItem) => any;
         } = {
@@ -128,9 +122,35 @@ export class DataExtractor {
             [processSelector.plays]: (item: LoadedItem) => item.plays,
             [processSelector.userInfo]: (item: LoadedItem) => item.userInfo,
         };
+        return processPropertyAccessors;
+    }
+
+
+
+    /**
+     * 
+     * @returns Whether it succeeded or not
+     */
+    public async HandleNext(tryAmount: number = 1): Promise<ReturnValueInterface> {
+        if (this.CheckActivity().error) return this.CheckActivity();
+
+
 
         for (let i = 0; i < tryAmount; i++) {
             try {
+                const processPropertyAccessors: {
+                    [key in processSelector]?: (item: LoadedItem) => any;
+                } = {
+                    [processSelector.players]: (item: LoadedItem) => item.players,
+                    [processSelector.games]: (item: LoadedItem) => item.games,
+                    [processSelector.locations]: (item: LoadedItem) => item.locations,
+                    [processSelector.tags]: (item: LoadedItem) => item.tags,
+                    [processSelector.challenges]: (item: LoadedItem) => item.challenges,
+                    [processSelector.groups]: (item: LoadedItem) => item.groups,
+                    [processSelector.deletedObjects]: (item: LoadedItem) => item.deletedObjects,
+                    [processSelector.plays]: (item: LoadedItem) => item.plays,
+                    [processSelector.userInfo]: (item: LoadedItem) => item.userInfo,
+                };
                 const accessor = processPropertyAccessors[this.selectedProcess];
                 const selectedData = accessor ? accessor(this.loadedItem) : undefined;
 
