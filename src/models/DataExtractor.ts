@@ -4,6 +4,17 @@ import { ReturnValueInterface } from "../dto/returnValue/returnValue.interface";
 import { playerTable, queueItems } from '../../src/mainDatabase';
 import { ModelRedesigner } from "./ModelRedesigner";
 import {Logger} from "./Logger";
+import {PlayerInterface} from "../dto/BG_Stats/player/player.interface";
+import {GameInterface} from "../dto/BG_Stats/game/game.interface";
+import {LocationInterface} from "../dto/BG_Stats/location/location.interface";
+import {TagInterface} from "../dto/BG_Stats/tags/tags.interface";
+import {ChallengeGameInterface} from "../dto/BG_Stats/challenges/challenges.interface";
+import {GroupInterface} from "../dto/BG_Stats/group/group.interface";
+import {DeletedObjectInterface} from "../dto/BG_Stats/deletedObjects/deletedObjects.interface";
+import {PlayInterface} from "../dto/BG_Stats/plays/plays.interface";
+import {UserInterface} from "../dto/user/user.interface";
+import {UserInfoInterface} from "../dto/BG_Stats/userInfo/userInfo.interface";
+import {BaseItemSaver, TagItemSaver} from "./ItemSaver";
 
 enum processSelector {
     players,
@@ -32,10 +43,10 @@ interface LoadedItem {
 
 
 export class DataExtractor {
-    loadedItem: QueueItemInterface;
-    selectedProcess: processSelector;
-    active: boolean = true;
-    private logger = new Logger<DataExtractor>(this);
+    private loadedItem: QueueItemInterface;
+    private selectedProcess: processSelector;
+    private active: boolean = true;
+    private logger: Logger<DataExtractor> = new Logger<DataExtractor>(this);
 
     constructor(queueItemInterface: QueueItemInterface) {
         this.loadedItem = queueItemInterface;
@@ -61,6 +72,14 @@ export class DataExtractor {
                 statusCode: 200
             }
         }
+    }
+
+    public LoadedItem(): QueueItemInterface {
+        return this.loadedItem;
+    }
+
+    public SelectedProcess(): processSelector {
+        return this.selectedProcess;
     }
 
     /**
@@ -107,25 +126,6 @@ export class DataExtractor {
             data: { continue: true, date: new Date(Date.now()) }
         }
     }
-
-    public GetProcessPropertyAccessor(selector: processSelector): ((item: LoadedItem) => any) | undefined {
-        const processPropertyAccessors: {
-            [key in processSelector]?: (item: LoadedItem) => any;
-        } = {
-            [processSelector.players]: (item: LoadedItem) => item.players,
-            [processSelector.games]: (item: LoadedItem) => item.games,
-            [processSelector.locations]: (item: LoadedItem) => item.locations,
-            [processSelector.tags]: (item: LoadedItem) => item.tags,
-            [processSelector.challenges]: (item: LoadedItem) => item.challenges,
-            [processSelector.groups]: (item: LoadedItem) => item.groups,
-            [processSelector.deletedObjects]: (item: LoadedItem) => item.deletedObjects,
-            [processSelector.plays]: (item: LoadedItem) => item.plays,
-            [processSelector.userInfo]: (item: LoadedItem) => item.userInfo,
-        };
-        return processPropertyAccessors;
-    }
-
-
 
     /**
      * 
@@ -184,8 +184,41 @@ export class DataExtractor {
     }
 
     public async SendItemToDataBase(): Promise<ReturnValueInterface> {
-        // make sure to create a new id whenever an Id is smaller than 0
-        // this is important
+        let obj: BaseItemSaver = null;
+        switch (this.selectedProcess) {
+            case processSelector.players:
+                console.log(this.loadedItem.players);
+                break;
+            case processSelector.games:
+                console.log(this.loadedItem.games);
+                break;
+            case processSelector.locations:
+                console.log(this.loadedItem.locations);
+                break;
+            case processSelector.tags:
+                obj = new TagItemSaver(this);
+                console.log(this.loadedItem.tags);
+                break;
+            case processSelector.challenges:
+                console.log(this.loadedItem.challenges);
+                break;
+            case processSelector.groups:
+                console.log(this.loadedItem.groups);
+                break;
+            case processSelector.deletedObjects:
+                console.log(this.loadedItem.deletedObjects);
+                break;
+            case processSelector.plays:
+                console.log(this.loadedItem.plays);
+                break;
+            case processSelector.userInfo:
+                console.log(this.loadedItem.userInfo);
+                break;
+            default:
+                this.logger.StringifyObject(this.selectedProcess).AppendText(" Does not exist in our 'processSelector'.").LogWarning();
+                break;
+        }
+
 
         return {
             data: undefined, error: true, message: "Not Implemented", statusCode: 500
