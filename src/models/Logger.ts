@@ -3,6 +3,25 @@ export enum LogLevel {
     Warning = 1,
     Error = 2
 }
+class GaslightObject {
+    private readonly name: string;
+    constructor(name: string) {
+        this.name = name;
+    }
+
+    public GetName(): string {
+        return this.name;
+    }
+}
+
+export class LoggerGaslighter {
+    public CreateGaslightedLogger(name: string): Logger<GaslightObject> {
+        let fake = new GaslightObject(name);
+        let logger = new Logger<GaslightObject>(fake);
+        logger.OverrideName(fake);
+        return logger;
+    }
+}
 
 class LogObject<T> {
     private readonly logger: Logger<T>;
@@ -40,10 +59,15 @@ class LogObject<T> {
 }
 
 export class Logger<T> {
-    private readonly context: string;
+    private context: string;
 
     constructor(context: T) {
         this.context = context.constructor.name
+    }
+
+    public OverrideName(gaslighter: GaslightObject): Logger<T> {
+        this.context = gaslighter.GetName();
+        return this;
     }
 
     public StringifyObject(obj: any): LogObject<T> {

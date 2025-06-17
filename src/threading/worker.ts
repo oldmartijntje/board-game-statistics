@@ -2,9 +2,9 @@ import workerMessage from '../../src/dto/workerMessage/workerMessage.interface';
 import { connectToDatabase, queueItems } from '../../src/mainDatabase';
 import { parentPort, workerData } from 'worker_threads';
 import { WorkerEnum } from './WorkerEnum';
-import { PlaySubmitter } from '../models/PlaySubmitter';
-import { QueueItemInterface } from '../../src/dto/queueItem/queueItem.interface';
 import { DataExtractor } from '../models/DataExtractor';
+import {LoggerGaslighter} from "../models/Logger";
+import {QueueItemInterface} from "../dto/queueItem/queueItem.interface";
 
 
 const { MONGO_URI } = process.env;
@@ -17,6 +17,7 @@ let stepId: NodeJS.Timeout = undefined;
 let busy: boolean = false;
 let log: any[] = [];
 const MAX_LOG_LENGTH = 50;
+let logger = new LoggerGaslighter().CreateGaslightedLogger("worker.ts");
 
 console.log('Worker started');
 
@@ -29,18 +30,6 @@ connectToDatabase(MONGO_URI).then(async () => {
 });
 
 let checkinTime: Date = undefined;
-
-function logger(data: any) {
-    log.push(data);
-    let loops = 0;
-    while (log.length > MAX_LOG_LENGTH) {
-        if (loops > 10) {
-            break;
-        }
-        log.shift();
-        loops++
-    }
-}
 
 async function step() {
     // clearInterval(stepId); // stop the repetition
@@ -65,10 +54,17 @@ async function step() {
     let dataExtractor = new DataExtractor(queueItem);
     let response = await dataExtractor.CheckAllDicts();
     if (!(response?.data?.continue)) {
-        logger(response);
+        logger.StringifyObject(response).LogInfo();
         busy = false;
         return;
     }
+    let response2 = await dataExtractor.HandleNext(5);
+    if (response2.error) {
+        logger.StringifyObject(response2).LogInfo();
+        busy = false;
+        return;
+    }
+    logger.StringifyObject(response2).LogInfo();
 
 }
 

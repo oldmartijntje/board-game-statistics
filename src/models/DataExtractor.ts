@@ -99,10 +99,21 @@ export class DataExtractor {
      * 
      * @returns Whether it succeeded or not
      */
-    public async HandleNext(): Promise<ReturnValueInterface> {
+    public async HandleNext(tryAmount: number = 1): Promise<ReturnValueInterface> {
         if (this.CheckActivity().error) return this.CheckActivity();
         // make sure to create a new id whenever an Id is smaller than 0
         // this is important
+
+        for (let i = 0; i < tryAmount; i++) {
+            try {
+
+            } catch (e) {
+                this.logger.StringifyObject(e).PrependText("HandleNext error: ").LogInfo();
+            }
+        }
+        return {
+            data: undefined, error: true, message: "Not Implemented", statusCode: 500
+        }
 
     }
 
