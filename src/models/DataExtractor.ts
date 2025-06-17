@@ -18,6 +18,19 @@ enum processSelector {
     null
 }
 
+interface LoadedItem {
+    players: any[];
+    games: any[];
+    locations: any[];
+    tags?: any[];
+    challenges?: any[];
+    groups?: any[];
+    deletedObjects?: any[];
+    plays: any[];
+    userInfo?: any;
+}
+
+
 export class DataExtractor {
     loadedItem: QueueItemInterface;
     selectedProcess: processSelector;
@@ -101,16 +114,59 @@ export class DataExtractor {
      */
     public async HandleNext(tryAmount: number = 1): Promise<ReturnValueInterface> {
         if (this.CheckActivity().error) return this.CheckActivity();
-        // make sure to create a new id whenever an Id is smaller than 0
-        // this is important
+
+        const processPropertyAccessors: {
+            [key in processSelector]?: (item: LoadedItem) => any;
+        } = {
+            [processSelector.players]: (item: LoadedItem) => item.players,
+            [processSelector.games]: (item: LoadedItem) => item.games,
+            [processSelector.locations]: (item: LoadedItem) => item.locations,
+            [processSelector.tags]: (item: LoadedItem) => item.tags,
+            [processSelector.challenges]: (item: LoadedItem) => item.challenges,
+            [processSelector.groups]: (item: LoadedItem) => item.groups,
+            [processSelector.deletedObjects]: (item: LoadedItem) => item.deletedObjects,
+            [processSelector.plays]: (item: LoadedItem) => item.plays,
+            [processSelector.userInfo]: (item: LoadedItem) => item.userInfo,
+        };
 
         for (let i = 0; i < tryAmount; i++) {
             try {
+                const accessor = processPropertyAccessors[this.selectedProcess];
+                const selectedData = accessor ? accessor(this.loadedItem) : undefined;
 
+                if (selectedData && (
+                    Array.isArray(selectedData) ? selectedData.length > 0 : !!selectedData
+                )) {
+                    let resultObj = await this.SendItemToDataBase();
+                    if (resultObj.error) {
+                        return resultObj;
+                    }
+                } else {
+                    await this.SubmitChanges();
+                    return {
+                        data: {
+                            "currentLoop": i,
+                            "expectedMaxLoop": tryAmount
+                        },
+                        error: false,
+                        message: "Could not process fully, no such item left. But accepted!",
+                        statusCode: 404
+                    }
+                }
             } catch (e) {
                 this.logger.StringifyObject(e).PrependText("HandleNext error: ").LogInfo();
+                return {
+                    data: e, error: true, message: "Unknown Escaped Error", statusCode: 500
+                }
             }
         }
+        return await this.SubmitChanges();
+    }
+
+    public async SendItemToDataBase(): Promise<ReturnValueInterface> {
+        // make sure to create a new id whenever an Id is smaller than 0
+        // this is important
+
         return {
             data: undefined, error: true, message: "Not Implemented", statusCode: 500
         }
